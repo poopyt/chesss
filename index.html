@@ -1945,7 +1945,7 @@ var Analyzer=(function(){
     if((m=/^bestmove (\S+)/.exec(line))){
       var p=pending;pending=null;
       p.best=m[1]==="(none)"?null:m[1];
-      p.cb(p);
+      if(!p.job.dead)p.cb(p);
       next();
     }
   }
@@ -1953,13 +1953,15 @@ var Analyzer=(function(){
   function next(){
     if(pending||!queue.length)return;
     var job=queue.shift();
+    if(job.dead){ next(); return; }
     if(kind!=="sf"){ runBuiltin(job); return; }
-    pending={cb:job.cb,cp:0,mate:null,depth:0,pv:[],id:job.id};
+    pending={cb:job.cb,cp:0,mate:null,depth:0,pv:[],id:job.id,job:job};
     post("position fen "+job.fen);
     post(job.movetime?("go movetime "+job.movetime):("go depth "+(job.depth||14)));
   }
   function runBuiltin(job){
     setTimeout(function(){
+      if(job.dead){ next(); return; }
       var pos=new E.Position(job.fen),r=null;
       try{r=E.think(pos,{depth:Math.min(job.depth||4,5),time:job.movetime||600});}catch(e){}
       var cp=0;try{cp=E.evalCp(pos,{depth:3,time:250});}catch(e){}
@@ -1968,14 +1970,23 @@ var Analyzer=(function(){
       next();
     },10);
   }
+  /* go() hands back the job so the caller can drop it again with cancel() */
   function go(fen,opts,cb){
     opts=opts||{};
-    var job={fen:fen,depth:opts.depth,movetime:opts.movetime,skill:opts.skill,cb:cb,id:++seq};
-    if(!ready){ onReady.push(function(){queue.push(job);next();}); return job.id; }
+    var job={fen:fen,depth:opts.depth,movetime:opts.movetime,skill:opts.skill,cb:cb,id:++seq,dead:false};
+    if(!ready){ onReady.push(function(){queue.push(job);next();}); return job; }
     if(opts.skill!=null&&kind==="sf") post("setoption name Skill Level value "+opts.skill);
-    queue.push(job); next(); return job.id;
+    queue.push(job); next(); return job;
   }
-  function cancel(){ queue.length=0; if(pending&&kind==="sf"){post("stop");} }
+  /* Abandon one job: it is skipped if still queued, a running Stockfish search
+     is stopped early, and either way its callback never fires. Whatever the
+     answer would have been, nobody is waiting for it any more. Calling this on
+     a job that has already finished does nothing. */
+  function cancel(job){
+    if(!job||job.dead)return;
+    job.dead=true;
+    if(pending&&pending.job===job&&kind==="sf")post("stop");
+  }
   boot();
   return {go:go,cancel:cancel,isSF:function(){return kind==="sf";},ready:function(){return ready;},
           retry:retry,
@@ -2222,10 +2233,11 @@ function arrowSvg(){
     '<polygon points="'+x2+','+y2+' '+(ex+px*w)+','+(ey+py*w)+' '+(ex-px*w)+','+(ey-py*w)+'" fill="#5EA8A1" opacity="0.92"/></svg>';
 }
 window.addEventListener("resize",renderBoard);
-var evalReq=0;
+var evalReq=0,evalJob=null;
 function updateEval(){
   var fen=S.pos.fen(),turn=S.pos.turn,my=++evalReq;
-  Analyzer.go(fen,{depth:Analyzer.isSF()?12:3,movetime:Analyzer.isSF()?250:null},function(res){
+  Analyzer.cancel(evalJob);   // the bar only ever shows the position on the board
+  evalJob=Analyzer.go(fen,{depth:Analyzer.isSF()?12:3,movetime:Analyzer.isSF()?250:null},function(res){
     if(my!==evalReq)return;
     var cp=whiteCp(res,turn); S.lastEval=cp;
     var pct=Math.abs(cp)>=90000?(cp>0?98:2):Math.max(3,Math.min(97,100/(1+Math.pow(10,-cp/420))));
@@ -2247,6 +2259,7 @@ function doMove(m){
   return san;
 }
 function resetTo(n){
+  cancelDiagnosis();
   var keep=S.path.slice(0,n);
   S.pos=new E.Position();S.node=S.op?S.op._tree:null;S.path=[];S.last=null;
   keep.forEach(function(t){var m=S.pos.moveFromSan(t.san);if(m)doMove(m);});
@@ -2324,7 +2337,7 @@ function startOpening(opId){
 function startLesson(opId,lineId,phase){
   var op=null;BOOK.forEach(function(o){if(o.id===opId)op=o;});
   if(!op)return;
-  S.gen++; if(S.timer){clearTimeout(S.timer);S.timer=null;} S.busy=false;
+  S.gen++; if(S.timer){clearTimeout(S.timer);S.timer=null;} S.busy=false; cancelDiagnosis();
   S.op=op; S.lesson=op._byId[lineId]; S.phase=phase||"learn";
   S.student=op.side==="black"?"black":"white";
   S.orient=S.student;
@@ -2342,6 +2355,7 @@ function startLesson(opId,lineId,phase){
 
 /* ---------------- sideline drills ---------------- */
 function beginDrill(){
+  cancelDiagnosis();
   if(!S.drills.length){
     setCoach("No sidelines here","This variation has no drilled opponent mistakes yet. Try another lesson.",null,null,"",null,"");
     return;}
@@ -2372,6 +2386,7 @@ function revealMove(san,label){
   return m;
 }
 function promptDrill(){
+  cancelDiagnosis();   // "Try again" puts the question back: no late verdict on top of it
   var e=S.drills[S.drillIdx];
   setCoach("Punish it",
     "Your opponent has just played <b>"+esc(e.bad)+"</b>. What is the strongest answer?",
@@ -2490,6 +2505,7 @@ function step(){
   },S.path.length===0?250:500);
 }
 function promptStudent(){
+  cancelDiagnosis();   // "Try again" puts the question back: no late verdict on top of it
   var mv=lessonMoves(),want=mv[S.path.length],note=noteAt(S.path.length);
   if(!want){finishLesson();return;}
   if(S.phase==="learn"){
@@ -2616,16 +2632,31 @@ function principleFlags(pos,move){
   }
   return out;
 }
+/* A verdict is only about the move that asked for it, so at most one is ever
+   in flight. Anything that moves the student on — another move, a retry, a
+   take-back, a new lesson — cancels the engine work and the callback with it;
+   without that, a slow answer lands on top of newer feedback and explains a
+   move that has already been taken back. */
+var diagJobs=[],diagSeq=0;
+function cancelDiagnosis(){
+  diagSeq++;
+  for(var i=0;i<diagJobs.length;i++)Analyzer.cancel(diagJobs[i]);
+  diagJobs.length=0;
+}
 function diagnose(pos,move,san,cb){
+  cancelDiagnosis();
+  var my=diagSeq;
   var turn=pos.turn,sign=turn===E.WHITE?1:-1;
   var fenBefore=pos.fen();
   var nx=pos.clone();nx.make(move);
   var fenAfter=nx.fen();
   var d={cost:0,reasons:[],costLabel:null};
   var deep=Analyzer.isSF()?14:3;
-  Analyzer.go(fenBefore,{depth:deep},function(a){
+  diagJobs.push(Analyzer.go(fenBefore,{depth:deep},function(a){
+    if(my!==diagSeq)return;
     var before=whiteCp(a,turn);
-    Analyzer.go(fenAfter,{depth:deep},function(b){
+    diagJobs.push(Analyzer.go(fenAfter,{depth:deep},function(b){
+      if(my!==diagSeq)return;
       var after=whiteCp(b,nx.turn);
       d.cost=Math.round((before-after)*sign);
       if(d.cost>=50)d.costLabel="engine: "+(d.cost/100).toFixed(2)+" pawns worse than the book move";
@@ -2643,8 +2674,8 @@ function diagnose(pos,move,san,cb){
           (loose[0].info.undefended?"undefended":"defended only by a more valuable piece")+".");
       principleFlags(pos,move).forEach(function(r){d.reasons.push(r);});
       cb(d);
-    });
-  });
+    }));
+  }));
 }
 function whyHtml(d,trap){
   var h='<div class="why">';
@@ -2664,7 +2695,7 @@ function whyHtml(d,trap){
 }
 function showRefutation(trap,san){
   var savePath=S.path.slice(),savePhase=S.phase;
-  S.gen++;var g=S.gen;
+  S.gen++;cancelDiagnosis();var g=S.gen;
   var m=S.pos.moveFromSan(trap.bad);
   if(m)doMove(m);
   var seq=(trap.pun||"").trim().split(/\s+/).filter(Boolean),i=0;
@@ -2751,6 +2782,7 @@ function askPromo(from,to){
     el.appendChild(b);});
 }
 function userMove(m){
+  cancelDiagnosis();   // a new attempt supersedes whatever the engine was asked about
   var san=S.pos.san(m);
   if(S.mode==="play"){doMove(m);if(!checkEnd())engineMove();return;}
   if(S.mode==="explore"){
@@ -2924,7 +2956,11 @@ function renderIdeas(){
     h+='<div class="cite"><div class="w">'+esc(r.work)+'</div><div class="a">'+esc(r.author)+'</div><div class="n">'+esc(r.note)+'</div></div>';});
   pane.innerHTML=h;
 }
+var analyseJob=null;
 function renderEngine(){
+  // a re-render means the position (or the tab) moved on: the deep search
+  // running for the old one would only block the queue behind it
+  Analyzer.cancel(analyseJob);analyseJob=null;
   var h='<div class="h">Engine</div>';
   h+='<div class="eng-row"><span class="k">Backend</span><span class="v">'+(Analyzer.isSF()?"Stockfish 10 (wasm/asm)":"built-in fallback")+'</span></div>';
   h+='<div class="eng-row"><span class="k">Status</span><span class="v">'+(Analyzer.ready()?"ready":"loading\u2026")+'</span></div>';
@@ -2938,7 +2974,8 @@ function renderEngine(){
     var out=document.getElementById("analysis");
     out.innerHTML='<div class="pv">calculating\u2026</div>';
     var fen=S.pos.fen(),turn=S.pos.turn;
-    Analyzer.go(fen,{depth:Analyzer.isSF()?18:5},function(res){
+    Analyzer.cancel(analyseJob);
+    analyseJob=Analyzer.go(fen,{depth:Analyzer.isSF()?18:5},function(res){
       var san=uciLineToSan(fen,res.pv&&res.pv.length?res.pv:[res.best],10);
       var start=S.path.length,txt="";
       san.forEach(function(s,i){var idx=start+i;
@@ -2991,7 +3028,7 @@ function setModeButtons(){
   document.getElementById("bRestart").disabled=(S.mode!=="course"||!S.lesson);
 }
 function setMode(m){
-  S.gen++;if(S.timer){clearTimeout(S.timer);S.timer=null;}S.busy=false;
+  S.gen++;if(S.timer){clearTimeout(S.timer);S.timer=null;}S.busy=false;cancelDiagnosis();
   S.mode=m;setModeButtons();setPrev("");
   if(m==="course"){
     if(S.op&&S.lesson)startLesson(S.op.id,S.lesson.id,S.phase);
