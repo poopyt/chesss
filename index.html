@@ -64,10 +64,14 @@ header.top{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-bot
 .sq .co{position:absolute;font-family:var(--mono);font-size:9px;opacity:.62;pointer-events:none}
 .sq .co.f{right:3px;bottom:1px} .sq .co.r{left:3px;top:1px}
 .sq.l .co{color:#7B7154} .sq.d .co{color:#C7D3BE}
-.pc{line-height:1;cursor:pointer;position:relative;z-index:2;font-size:min(8vw,46px)}
-@supports (font-size:1cqw){ .board{container-type:inline-size} .pc{font-size:9cqw} }
-.pc.w{color:#F6F1E4;text-shadow:0 0 1px #2A3640,0 1px 0 #2A3640,1px 0 0 #2A3640,-1px 0 0 #2A3640,0 -1px 0 #2A3640,0 3px 5px rgba(0,0,0,.35)}
-.pc.b{color:#1E272E;text-shadow:0 0 1px rgba(255,255,255,.42),0 3px 5px rgba(0,0,0,.3)}
+/* pieces are drawn as SVG, not font glyphs: some mobile platforms render the
+   chess characters with a colour emoji font, which ignores CSS colour and
+   turns the white pawns black. */
+.pc{display:block;width:100%;height:100%;cursor:pointer;position:relative;z-index:2;
+  stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round;
+  filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.35))}
+.pc.w{fill:#F6F1E4;stroke:#2A3640}
+.pc.b{fill:#1E272E;stroke:#DCE4EA}
 .sq.last::after{content:"";position:absolute;inset:0;background:var(--brass);opacity:.26;z-index:1}
 .sq.sel::after{content:"";position:absolute;inset:0;background:var(--brass);opacity:.4;z-index:1}
 .sq.chk::after{content:"";position:absolute;inset:0;z-index:1;
@@ -81,7 +85,9 @@ header.top{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-bot
 .board.shake{animation:shk .34s}
 @keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}45%{transform:translateX(6px)}70%{transform:translateX(-3px)}}
 .promo{position:absolute;inset:0;background:rgba(12,17,22,.86);z-index:9;display:flex;align-items:center;justify-content:center;gap:6px}
-.promo button{background:var(--panel2);border:1px solid var(--line);width:58px;height:58px;font-size:32px;color:#F6F1E4}
+.promo button{background:var(--panel2);border:1px solid var(--line);width:58px;height:58px;padding:4px;
+  display:flex;align-items:center;justify-content:center}
+.promo .pc{filter:none}
 /* coach */
 .coach{margin-top:12px;border:1px solid var(--line);border-left:2px solid var(--brass);background:var(--panel);
   padding:12px 14px;min-height:84px}
@@ -201,6 +207,47 @@ footer a{color:var(--ink2)}
 </style>
 </head>
 <body>
+<!-- flat piece set; every shape inherits fill/stroke from the .pc.w / .pc.b classes -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+ <defs>
+  <symbol id="pc1" viewBox="0 0 45 45">
+    <circle cx="22.5" cy="11.5" r="5.6"/>
+    <path d="M17.2 17.5c0 5.5-3.2 9.5-4.7 14.5h20c-1.5-5-4.7-9-4.7-14.5z"/>
+    <path d="M11.5 32h22l3.5 8h-29z"/>
+  </symbol>
+  <symbol id="pc2" viewBox="0 0 45 45">
+    <path d="M28.5 7C23 3.5 16.5 6.5 14.5 12l-3 7.5c-.9 1.9.4 3.9 2.5 3.9h2.6l2-3 3.4-1.4c-1.4 3.4-3 6-5 9.1-.9 1.4-1.5 2.7-1.5 4h17.5C33.6 20 32.6 11 28.5 7z"/>
+    <circle cx="17.6" cy="13.6" r="1.1"/>
+    <path d="M11.5 32h22l3.5 8h-29z"/>
+  </symbol>
+  <symbol id="pc3" viewBox="0 0 45 45">
+    <circle cx="22.5" cy="6" r="2.2"/>
+    <path d="M22.5 8.5c4.5 4 8 8 8 12 0 4-3.6 6.8-8 6.8s-8-2.8-8-6.8c0-4 3.5-8 8-12z"/>
+    <path d="M19.5 14.5l5.5 4.5"/>
+    <path d="M15.5 27h14l-1 5h-12z"/>
+    <path d="M11.5 32h22l3.5 8h-29z"/>
+  </symbol>
+  <symbol id="pc4" viewBox="0 0 45 45">
+    <path d="M11 8h5v4h4V8h5v4h4V8h5v9H11z"/>
+    <path d="M13.5 17h18l-2 15h-14z"/>
+    <path d="M11.5 32h22l3.5 8h-29z"/>
+  </symbol>
+  <symbol id="pc5" viewBox="0 0 45 45">
+    <circle cx="9.5" cy="12.5" r="2.6"/><circle cx="16" cy="8.5" r="2.6"/>
+    <circle cx="22.5" cy="7" r="3"/>
+    <circle cx="29" cy="8.5" r="2.6"/><circle cx="35.5" cy="12.5" r="2.6"/>
+    <path d="M9.5 14.5l4 11.5h18l4-11.5-6.5-3.6-6.5 9.6-6.5-9.6z"/>
+    <path d="M13 26h19l1 6h-21z"/>
+    <path d="M11.5 32h22l3.5 8h-29z"/>
+  </symbol>
+  <symbol id="pc6" viewBox="0 0 45 45">
+    <path d="M12.5 26c-4-6 0-12 5.5-9.5l4.5 2.5 4.5-2.5c5.5-2.5 9.5 3.5 5.5 9.5z"/>
+    <path d="M21 4h3v3h3v3h-3v9h-3v-9h-3V7h3z"/>
+    <path d="M13 26h19l1 6h-21z"/>
+    <path d="M11.5 32h22l3.5 8h-29z"/>
+  </symbol>
+ </defs>
+</svg>
 <div class="wrap">
   <header class="top">
     <div class="brand"><span class="mark">&#9822;</span><h1>Kibitz</h1><span class="tag">Opening Course</span></div>
@@ -1828,7 +1875,14 @@ sicilian:[
 (function(){
 "use strict";
 var E=Engine;
-var GLYPH={1:"\u265F",2:"\u265E",3:"\u265D",4:"\u265C",5:"\u265B",6:"\u265A"};
+var PNAME={1:"pawn",2:"knight",3:"bishop",4:"rook",5:"queen",6:"king"};
+/* Pieces come from the <symbol> set at the top of the document rather than
+   from Unicode chess characters: mobile browsers hand U+265F and friends to
+   the colour emoji font, which paints them black whatever the CSS says. */
+function pieceSvg(type,white){
+  return '<svg class="pc '+(white?"w":"b")+'" viewBox="0 0 45 45" role="img" aria-label="'+
+    (white?"white ":"black ")+PNAME[type]+'"><use href="#pc'+type+'"/></svg>';
+}
 
 /* ============================================================
    Analyzer — Stockfish in a worker, with the built-in engine
@@ -2143,7 +2197,7 @@ function renderBoard(){
     if(S.badSq===sq)cls+=" bad";
     var inner="";
     if(S.legal.indexOf(sq)>=0)inner+=pc?'<span class="ring"></span>':'<span class="dot"></span>';
-    if(pc)inner+='<span class="pc '+(E.colorOf(pc)===E.WHITE?"w":"b")+'">'+GLYPH[E.type(pc)]+'</span>';
+    if(pc)inner+=pieceSvg(E.type(pc),E.colorOf(pc)===E.WHITE);
     if(S.orient==="white"?rank===7:rank===0)inner+='<span class="co f">'+"abcdefgh"[file]+'</span>';
     if(S.orient==="white"?file===0:file===7)inner+='<span class="co r">'+(8-rank)+'</span>';
     html+='<div class="'+cls+'" data-sq="'+sq+'">'+inner+'</div>';
@@ -2690,7 +2744,9 @@ function onSquare(sq){
 function askPromo(from,to){
   var el=document.getElementById("promo");el.style.display="flex";el.innerHTML="";
   [5,4,3,2].forEach(function(t){
-    var b=document.createElement("button");b.innerHTML=GLYPH[t];
+    var b=document.createElement("button");
+    b.innerHTML=pieceSvg(t,S.pos.turn===E.WHITE);
+    b.title="Promote to "+PNAME[t];
     b.onclick=function(){el.style.display="none";var m=S.pos.moveFromSquares(from,to,t);if(m)userMove(m);};
     el.appendChild(b);});
 }
