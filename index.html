@@ -2081,7 +2081,11 @@ var S={
   orient:"white", sel:-1, legal:[], last:null, hint:0, badSq:-1,
   right:0, wrong:0, mistakes:[], finished:false, arrow:null,
   drills:[], drillIdx:0, drillSeq:[], drillStep:0, drillWrong:0,
-  busy:false, gen:0, timer:null, engineInfo:null, progress:{}, lastEval:0
+  busy:false, gen:0, timer:null, engineInfo:null, progress:{}, lastEval:0,
+  // stepping back through the moves played so far. -1 means "at the live
+  // position"; otherwise the number of plies the board is showing. The line
+  // itself is untouched, so Forward always walks back to where you were.
+  review:-1, reviewPos:null
 };
 var Store=(function(){
   // Three tiers, tried in order, each guarded so a blocked API can never
@@ -2185,6 +2189,19 @@ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp
 function lessonMoves(){return S.lesson?S.lesson.moves.trim().split(/\s+/):[];}
 function moveLabel(i){return (Math.floor(i/2)+1)+(i%2===0?".":"...");}
 function studentToMove(){return S.pos.turn===(S.student==="white"?E.WHITE:E.BLACK);}
+/* The position on the screen, which is the live one unless the moves so far
+   are being stepped through. Nothing about the lesson changes while looking
+   back, so returning to the live position is always possible. */
+function boardPos(){return S.review<0?S.pos:S.reviewPos;}
+function reviewing(){return S.review>=0;}
+function enterReview(ply){
+  if(ply<0||ply>=S.path.length){exitReview();return;}
+  var p=new E.Position();
+  for(var i=0;i<ply;i++){var m=p.moveFromSan(S.path[i].san);if(!m)break;p.make(m);}
+  S.review=ply;S.reviewPos=p;
+  S.sel=-1;S.legal=[];S.hint=0;S.arrow=null;S.badSq=-1;
+}
+function exitReview(){S.review=-1;S.reviewPos=null;}
 function noteAt(i){return S.lesson&&S.lesson.notes?S.lesson.notes[i]:null;}
 function prog(id){var p=S.progress[id];return p?{learn:!!p.learn,test:p.test||0,side:!!p.side}:{learn:false,test:0,side:false};}
 
@@ -2193,14 +2210,17 @@ function prog(id){var p=S.progress[id];return p?{learn:!!p.learn,test:p.test||0,
    ============================================================ */
 var boardEl=document.getElementById("board");
 function renderBoard(){
-  var order=[],r,f;
+  var order=[],r,f,P=boardPos();
   for(r=0;r<8;r++)for(f=0;f<8;f++)order.push(r*16+f);
   if(S.orient==="black")order.reverse();
-  var chk=S.pos.inCheck()?S.pos.kings[S.pos.turn]:-1,html="";
+  var chk=P.inCheck()?P.kings[P.turn]:-1,html="";
+  // while stepping back, the highlight follows the move that produced the
+  // position on screen rather than the last move of the live line
+  var last=reviewing()?(S.review>0?S.path[S.review-1].move:null):S.last;
   for(var i=0;i<order.length;i++){
-    var sq=order[i],pc=S.pos.board[sq],file=sq&15,rank=sq>>4;
+    var sq=order[i],pc=P.board[sq],file=sq&15,rank=sq>>4;
     var cls="sq "+(((file+rank)%2===1)?"d":"l");
-    if(S.last&&(sq===S.last.from||sq===S.last.to))cls+=" last";
+    if(last&&(sq===last.from||sq===last.to))cls+=" last";
     if(sq===S.sel)cls+=" sel";
     if(sq===chk)cls+=" chk";
     if(S.hint&&sq===S.hintFrom)cls+=" hintf";
@@ -2235,7 +2255,7 @@ function arrowSvg(){
 window.addEventListener("resize",renderBoard);
 var evalReq=0,evalJob=null;
 function updateEval(){
-  var fen=S.pos.fen(),turn=S.pos.turn,my=++evalReq;
+  var P=boardPos(),fen=P.fen(),turn=P.turn,my=++evalReq;   // the bar follows what is on screen
   Analyzer.cancel(evalJob);   // the bar only ever shows the position on the board
   evalJob=Analyzer.go(fen,{depth:Analyzer.isSF()?12:3,movetime:Analyzer.isSF()?250:null},function(res){
     if(my!==evalReq)return;
@@ -2259,7 +2279,7 @@ function doMove(m){
   return san;
 }
 function resetTo(n){
-  cancelDiagnosis();
+  cancelDiagnosis();exitReview();
   var keep=S.path.slice(0,n);
   S.pos=new E.Position();S.node=S.op?S.op._tree:null;S.path=[];S.last=null;
   keep.forEach(function(t){var m=S.pos.moveFromSan(t.san);if(m)doMove(m);});
@@ -2337,7 +2357,7 @@ function startOpening(opId){
 function startLesson(opId,lineId,phase){
   var op=null;BOOK.forEach(function(o){if(o.id===opId)op=o;});
   if(!op)return;
-  S.gen++; if(S.timer){clearTimeout(S.timer);S.timer=null;} S.busy=false; cancelDiagnosis();
+  S.gen++; if(S.timer){clearTimeout(S.timer);S.timer=null;} S.busy=false; cancelDiagnosis(); exitReview();
   S.op=op; S.lesson=op._byId[lineId]; S.phase=phase||"learn";
   S.student=op.side==="black"?"black":"white";
   S.orient=S.student;
@@ -2355,7 +2375,7 @@ function startLesson(opId,lineId,phase){
 
 /* ---------------- sideline drills ---------------- */
 function beginDrill(){
-  cancelDiagnosis();
+  cancelDiagnosis();exitReview();
   if(!S.drills.length){
     setCoach("No sidelines here","This variation has no drilled opponent mistakes yet. Try another lesson.",null,null,"",null,"");
     return;}
@@ -2753,6 +2773,9 @@ boardEl.addEventListener("click",function(ev){
   onSquare(+cell.getAttribute("data-sq"));
 });
 function canMoveNow(){
+  // stepping back is a look, not a take-back: only Explore, where branching off
+  // is the whole point, lets you move from a position you have stepped back to
+  if(reviewing())return S.mode==="explore";
   if(S.mode==="explore")return true;
   if(S.mode==="play")return S.pos.turn===(S.orient==="white"?E.WHITE:E.BLACK);
   if(!S.lesson||S.finished)return false;
@@ -2760,15 +2783,16 @@ function canMoveNow(){
   return studentToMove();
 }
 function onSquare(sq){
+  var P=boardPos();
   if(S.sel>=0&&S.legal.indexOf(sq)>=0){
-    var m=S.pos.moveFromSquares(S.sel,sq);
+    var m=P.moveFromSquares(S.sel,sq);
     if(m&&m.promo){askPromo(S.sel,sq);return;}
     if(m)userMove(m);return;
   }
-  var pc=S.pos.board[sq];
-  if(pc&&E.colorOf(pc)===S.pos.turn&&canMoveNow()){
+  var pc=P.board[sq];
+  if(pc&&E.colorOf(pc)===P.turn&&canMoveNow()){
     S.sel=sq;
-    S.legal=S.pos.moves().filter(function(m){return m.from===sq;}).map(function(m){return m.to;});
+    S.legal=P.moves().filter(function(m){return m.from===sq;}).map(function(m){return m.to;});
   }else{S.sel=-1;S.legal=[];}
   renderBoard();
 }
@@ -2776,13 +2800,16 @@ function askPromo(from,to){
   var el=document.getElementById("promo");el.style.display="flex";el.innerHTML="";
   [5,4,3,2].forEach(function(t){
     var b=document.createElement("button");
-    b.innerHTML=pieceSvg(t,S.pos.turn===E.WHITE);
+    b.innerHTML=pieceSvg(t,boardPos().turn===E.WHITE);
     b.title="Promote to "+PNAME[t];
-    b.onclick=function(){el.style.display="none";var m=S.pos.moveFromSquares(from,to,t);if(m)userMove(m);};
+    b.onclick=function(){el.style.display="none";var m=boardPos().moveFromSquares(from,to,t);if(m)userMove(m);};
     el.appendChild(b);});
 }
 function userMove(m){
   cancelDiagnosis();   // a new attempt supersedes whatever the engine was asked about
+  // moving from a position stepped back to (Explore only) branches off there,
+  // which does discard what followed — as taking the move back always did
+  if(reviewing()){var at=S.review;exitReview();resetTo(at);}
   var san=S.pos.san(m);
   if(S.mode==="play"){doMove(m);if(!checkEnd())engineMove();return;}
   if(S.mode==="explore"){
@@ -3028,7 +3055,7 @@ function setModeButtons(){
   document.getElementById("bRestart").disabled=(S.mode!=="course"||!S.lesson);
 }
 function setMode(m){
-  S.gen++;if(S.timer){clearTimeout(S.timer);S.timer=null;}S.busy=false;cancelDiagnosis();
+  S.gen++;if(S.timer){clearTimeout(S.timer);S.timer=null;}S.busy=false;cancelDiagnosis();exitReview();
   S.mode=m;setModeButtons();setPrev("");
   if(m==="course"){
     if(S.op&&S.lesson)startLesson(S.op.id,S.lesson.id,S.phase);
@@ -3048,6 +3075,7 @@ document.getElementById("mPlay").onclick=function(){setMode("play");};
 ["tCourse","tLine","tIdeas","tEng"].forEach(function(id,i){
   document.getElementById(id).onclick=function(){S.tab=["course","line","ideas","eng"][i];renderRail();};});
 document.getElementById("bShow").onclick=function(){
+  if(reviewing())return;   // the review panel offers the way back to the position
   if(S.mode!=="course"||!S.lesson||S.finished)return;
   if(S.phase==="side"){showDrillMove();return;}
   if(!studentToMove())return;
@@ -3061,11 +3089,54 @@ document.getElementById("bShow").onclick=function(){
   var b=document.getElementById("aPlayIt");
   if(b)b.onclick=function(){playStudentMove(S.pos.moveFromSan(want),want,true);};
 };
-document.getElementById("bPrev").onclick=function(){
-  if(S.mode==="course"){if(S.path.length){resetTo(S.path.length-1);renderBoard();setPrev(prevFor(S.path.length-1));promptStudent();}return;}
-  if(S.path.length){resetTo(S.path.length-1);renderBoard();exploreCoach();}
-};
+/* ---- stepping back through the moves already played ----
+   Back used to unplay the move, which threw away the position the student was
+   working on — in a sideline that meant the drill could not be resumed. It now
+   only changes what is on screen, so Forward always walks back to the live
+   position and the lesson picks up where it left off. */
+function reviewCoach(){
+  var i=S.review-1,left=S.path.length-S.review;
+  var note=(S.mode==="course"&&S.lesson&&S.phase!=="side")?noteAt(i):null;
+  setCoach(i>=0?("Looking back: "+moveLabel(i)+" "+S.path[i].san):"Looking back: the starting position",
+    (note?esc(note)+" ":"")+"Nothing has been taken back. Forward replays the line from here.",
+    null,left+(left===1?" move":" moves")+" ahead of you",
+    '<button class="mini go" id="aResume">Back to the position</button>',null,phaseLabel());
+  var b=document.getElementById("aResume");
+  if(b)b.onclick=resumeLive;
+}
+function stepBack(){
+  var cur=reviewing()?S.review:S.path.length;
+  if(cur<=0)return;
+  enterReview(cur-1);renderBoard();updateEval();reviewCoach();
+}
+function stepForward(){
+  var nxt=S.review+1;
+  if(nxt>=S.path.length){resumeLive();return;}
+  enterReview(nxt);renderBoard();updateEval();reviewCoach();
+}
+function resumeLive(){
+  exitReview();S.sel=-1;S.legal=[];
+  renderBoard();updateEval();
+  if(S.mode==="explore"){exploreCoach();return;}
+  if(S.mode==="play"){
+    var mine=S.pos.turn===(S.orient==="white"?E.WHITE:E.BLACK);
+    setCoach(mine?"Your move":"Engine to move",
+      S.path.length?("Back at the game after <b>"+esc(S.path[S.path.length-1].san)+"</b>."):"",
+      null,null,"",null,"");
+    return;
+  }
+  if(!S.lesson)return;
+  if(S.finished){setCoach("End of the line","You are back at the final position.","ok",null,"",null,phaseLabel());return;}
+  if(S.phase==="side"){if(S.drillStep<S.drillSeq.length)promptDrill();return;}
+  if(studentToMove()){promptStudent();return;}
+  // mid-sequence: the lesson is about to play the opponent's move, and the
+  // panel must not be left saying we are looking back when we are not
+  setCoach(S.path.length?(moveLabel(S.path.length-1)+" "+S.path[S.path.length-1].san):"Back at the position",
+    "Back at the live position.",null,null,"",null,phaseLabel());
+}
+document.getElementById("bPrev").onclick=stepBack;
 document.getElementById("bNext").onclick=function(){
+  if(reviewing()){stepForward();return;}
   if(S.mode==="course"){
     if(S.phase==="side"){
       var sn=S.drillSeq[S.drillStep],mm=sn?S.pos.moveFromSan(sn):null;
