@@ -1629,6 +1629,107 @@ var BOOK = [
      pun:"d4 Ne6 dxe5",
      best:"Nd6",bestWhy:"4...Nd6! is the only good square \u2014 it defends against Qxe5+ ideas and keeps f7 covered without blocking any other piece."}
   ]
+},
+{
+  id:"kid", name:"King's Indian Defence", aka:"The Fighting Answer to 1.d4", eco:"E60–E99",
+  opener:"1.d4 Nf6 2.c4 g6 3.Nc3 Bg7", side:"black",
+  summary:"Black hands over the centre on purpose, castles behind the fianchettoed bishop, and only then attacks — usually by closing the position with ...e5 and hurling the f- and g-pawns at White's king. Almost every King's Indian becomes a race: White breaks through on the queenside, Black mates on the kingside, and the player who arrives first wins. It is the least drawish answer to 1.d4 there is.",
+  ideas:[
+    "Black gives White a big pawn centre and then attacks it. If you are not attacking it, you are just worse — the ...e5, ...c5 and ...b5 breaks are the whole opening.",
+    "When White answers ...e5 with d5, the centre locks and the wings decide the game. Pawn chains point the way: White's c4–d5–e4 chain points at the queenside, Black's d6–e5–f7 chain points at the kingside, and each side attacks where their chain aims.",
+    "The knight on f6 has to move before ...f5 can be played. That single fact explains ...Nd7, ...Ne8 and ...Nh5 — the move order of the whole defence hangs on it.",
+    "Do not defend the queenside. Counting is the skill: in the sharpest lines both sides are simply pushing, and a tempo spent on defence usually loses the race.",
+    "The g7 bishop is the long-term point of everything. Keep the a1–h8 diagonal in mind: many King's Indian sacrifices exist purely to open it.",
+    "Against the fianchetto and other quiet systems there is no king to attack, so switch wings: ...a6, ...Rb8 and ...b5 is the standard plan, not an automatic ...f5."
+  ],
+  structure:"After 1.d4 Nf6 2.c4 g6 3.Nc3 Bg7 4.e4 d6 the defining moment is ...e5. White can close with d5 (a locked centre and opposite-wing races), trade with dxe5 (a dry queenless middlegame), or leave the tension. Where the centre is closed, Black plays ...f5–f4 and ...g5–g4; White plays c5 and pushes on the b- and c-files.",
+  plans:{white:"Take the space that is offered, close or clarify the centre, then break with c4–c5 against d6 and invade on the queenside — or trade queens and grind the weakened dark squares.",black:"Complete the fianchetto, strike with ...e5 (or ...c5 against Bg5 systems), unblock the f-pawn, and storm the king with ...f5, ...f4 and ...g5. Against fianchetto set-ups switch to ...a6, ...Rb8 and ...b5."},
+  pitfall:"Playing the King's Indian set-up on autopilot and never striking. The moves ...Nf6, ...g6, ...Bg7, ...d6, ...O-O take care of themselves; if the break never comes, White simply has more space everywhere and Black has a bad game with no plan.",
+  reading:[
+    {work:"Kotronias on the King's Indian (5 volumes)",author:"Vassilios Kotronias",note:"Quality Chess. The deepest modern reference — a complete Black repertoire, analysed to the last detail."},
+    {work:"Bologan's King's Indian",author:"Victor Bologan",note:"New in Chess. A lifetime King's Indian player's repertoire, with the ideas explained rather than just listed."},
+    {work:"King's Indian Warfare",author:"Ilya Smirin",note:"Quality Chess. Smirin annotates his own games against the world's best; the finest book on how these middlegames actually feel."},
+    {work:"The King's Indian Defence: Move by Move",author:"Sam Collins",note:"Everyman Chess, 2017. Question-and-answer format, written for club players."},
+    {work:"Starting Out: The King's Indian",author:"Joe Gallagher",note:"Everyman Chess. The standard first book on the opening's ideas and structures."}
+  ],
+  lines:[
+    {id:"kid-mdp-ne1",name:"Mar del Plata: 9.Ne1",eco:"E99",v:"∞",
+     gist:"The main line of the whole opening, and the purest race in chess: White queues up c5 on the queenside while Black throws the kingside pawns at the king.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 O-O Nc6 d5 Ne7 Ne1 Nd7 Nd3 f5 Bd2 Nf6 f3 f4 c5 g5 Rc1 Ng6 cxd6 cxd6",
+     notes:{11:"The King's Indian move. Black has let White build the centre and now hits it — everything from here depends on how White resolves the tension.",14:"Closing the centre. Now both sides know exactly where to play: White on the queenside, Black on the kingside.",15:"The Mar del Plata, named after Najdorf–Gligorić, Mar del Plata 1953. The knight steps aside so the f-pawn can run.",16:"Clearing f3 for the pawn and heading for d3, where the knight supports c5 and covers f4.",17:"Gligorić's move, and the one that defined the whole system. Unlike ...Ne8 it also slows White's c-pawn.",19:"The point of the entire defence. Every King's Indian plan runs through this pawn.",23:"Shutting the centre for good. From here it is ...g5, ...g4 and ...g3 against c5 and an invasion — pure counting.",24:"The mirror image of Black's plan. Neither side defends; both push.",25:"The storm begins. The g7 bishop simply waits for the long diagonal to open.",27:"The standard regrouping: the knight covers f4 and e5 and clears the way for ...Rf7 and ...Bf8.",29:"Recapturing towards the centre. Both attacks are now under way and the position is genuinely unclear — which is exactly what Black wanted from move one."}},
+
+    {id:"kid-mdp-nd2",name:"Mar del Plata: 9.Nd2",eco:"E97",v:"⇄",
+     gist:"The same race, entered a little more carefully: the knight goes to d2 rather than e1, keeping b3 and c4 guarded.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 O-O Nc6 d5 Ne7 Nd2 a5 Rb1 Nd7 b3 f5 Bb2 Nf6 Re1 Kh8 h3 g5",
+     notes:{16:"From d2 the knight covers c4 and b3 and supports the c5 break, without shutting in the f1 rook.",17:"Before anything else, ...a5 puts a brake on b4. White's whole plan needs that pawn to move.",19:"The f6 knight must move before ...f5 — knight first, pawn second, always.",21:"Now the storm can start. Note that Black has spent two moves stopping b4 and lost nothing: White's attack is slower here too.",25:"Tucking the king off the a2–g8 diagonal so that ...g5 and ...Rg8 come without tactical accidents.",27:"...g5, ...g4 and ...f4 follow. The engine calls it balanced; over the board it is far easier to play as Black."}},
+
+    {id:"kid-bayonet",name:"Bayonet Attack (9.b4)",eco:"E97",v:"⩲",
+     gist:"Kramnik's weapon: White starts the queenside attack immediately, without spending a move on the knight. It is the line that drove Kasparov away from the King's Indian.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 O-O Nc6 d5 Ne7 b4 Nh5 Re1 f5 Ng5 Nf6 Bf3 c6 Ne6 Bxe6 dxe6 a5 b5 fxe4",
+     notes:{16:"The Bayonet. Kramnik made it the main line in the 1990s and beat Kasparov with it — after those games Kasparov gave up the defence.",17:"Heading for f4 and unblocking the f-pawn in one move. 9...a5 and 9...Nd7 are the main alternatives and score just as well.",19:"On schedule. Black's attack does not get faster by waiting.",21:"The knight returns now that it has provoked Re1 and Ng5.",23:"Shoring up d5 and b5 before White's pawns arrive.",24:"The standard idea: the knight lands on e6 and must be taken, giving White a protected passed pawn but handing Black the f-file.",27:"Counterattacking on the wing where White has committed pawns. The e6 pawn is a long-term weakness.",29:"Opening the f-file and the long diagonal. Sharp and roughly level."}},
+
+    {id:"kid-petrosian",name:"Petrosian System (7.d5)",eco:"E92",v:"=",
+     gist:"White closes the centre at once, before Black has committed the queen's knight. Petrosian's speciality in the 1960s, revived by Kramnik in the 1990s.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 d5 a5 Bg5 h6 Bh4 Na6 Nd2 Qe8 O-O Nh7 a3 Bd7 b3 h5",
+     notes:{12:"The Petrosian System. By closing first, White keeps the c6 square away from Black's knight.",13:"The main reply. With the centre shut, stopping b4 comes before everything else.",14:"The pin. White's whole idea is to tie down the f6 knight — the one piece that has to move for ...f5.",17:"c6 is unavailable, so the knight takes the other route: a6 and then c5.",19:"Unpinning by hand. The queen steps off the d8–h4 diagonal so that ...Nh7 and ...f5 become legal ideas.",21:"The knight steps aside and the f-pawn is free at last.",25:"...h5 and ...Bh6 are the standard follow-up. Chances are balanced: White is faster on the queenside, Black's attack is more dangerous."}},
+
+    {id:"kid-gligoric",name:"Gligorić System (7.Be3)",eco:"E92",v:"⩲",
+     gist:"White develops and keeps every option open. Named after Svetozar Gligorić, who contributed as much to King's Indian theory from the white side as from the black.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 Be3 Ng4 Bg5 f6 Bh4 g5 Bg3 Nh6 h3 Nc6 d5 Ne7 Bh2 Ng6",
+     notes:{12:"The most flexible move: White waits to see what Black does with the centre before choosing d5, dxe5 or nothing.",13:"The principled answer — hit the bishop at once. Sharp, and slightly risky, which is the usual price of principle.",15:"Kicking again. Every tempo spent chasing the bishop is a tempo White is not spending on the centre.",17:"Committal, but the bishop is running out of squares and Black needs these tempi to bring the knight back.",19:"The knight returns via f7. It looks ugly on h6 and it is going somewhere useful.",21:"Now the queenside pieces come out and Black is ready for the usual ...f5.",25:"A normal King's Indian: White has the space, Black has the plan."}},
+
+    {id:"kid-exchange",name:"Exchange Variation (7.dxe5)",eco:"E92",v:"=",
+     gist:"White trades queens and offers a dry endgame. It is the most common way to be bored into a draw as Black — and the most common way to over-press and lose.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 dxe5 dxe5 Qxd8 Rxd8 Bg5 Re8 Nd5 Nxd5 cxd5 c6 Bc4 cxd5 Bxd5 Nd7",
+     notes:{12:"The queenless middlegame. White's hope is that the King's Indian bishop has nothing left to attack.",15:"Losing the right to castle costs Black nothing here — the king is already housed and the rook has an open file.",16:"Pinning nothing in particular, but the bishop eyes e7 and f6.",18:"The outpost. If Black leaves the knight on d5 it will sit there all game.",19:"So it is traded immediately, before White can support it with c4.",25:"Equal. There is a safe draw here and also a long game: both sides have an open file and a slightly loose structure, and the player who understands that better wins."}},
+
+    {id:"kid-samisch-e5",name:"Sämisch: closing the centre",eco:"E89",v:"∞",
+     gist:"The Sämisch is the critical test of the whole defence: f3 props up e4 so that White can castle long and attack. Black closes the centre and races towards White's new king.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 f3 O-O Be3 e5 d5 Nh5 Qd2 f5 O-O-O Nd7 Bd3 Nc5 Bc2 a6 Nge2 b5",
+     notes:{8:"The Sämisch, from the 1920s and named after Friedrich Sämisch. f3 supports e4 and prepares Be3, Qd2 and castling long.",11:"The usual strike. Because White has spent a move on f3, Black is in time for the ...f5 plan.",12:"Closing. White will attack on the queenside — which is now also where the white king is going.",13:"The knight clears the f-pawn's path and eyes f4. Against the Sämisch, Black must get ...f5 in.",15:"On schedule.",16:"Castling into the attack, which is the point of the whole variation: White intends to be faster on the other wing.",19:"The knight arrives on c5, hitting the bishop and pointing at b3 and a4.",23:"The break. Every King's Indian against a long-castled king comes down to ...b5 and ...a5–a4."}},
+
+    {id:"kid-samisch-panno",name:"Sämisch: Panno (6...Nc6)",eco:"E84",v:"⩲",
+     gist:"Named after Oscar Panno. Instead of the immediate ...e5, Black develops the knight actively and plays on the queenside with ...a6, ...Rb8 and ...b5.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 f3 O-O Be3 Nc6 Nge2 a6 Qd2 Rb8 Nc1 e5 d5 Nd4 Nb3 Nxb3 axb3 c5",
+     notes:{11:"The Panno. The knight goes to its most active square even though it can be hit by d5.",13:"...a6 and ...Rb8 prepare ...b5, hitting the c4 pawn that holds White's centre together.",17:"Now the centre, on Black's terms: with a knight on c6 the ...Nd4 outpost appears the moment White plays d5.",19:"The point of the system. A knight in front of the d5 pawn cannot be chased away by pawns.",23:"...c5 fixes the structure and Black plays on the queenside dark squares. Balanced, and much less theoretical than the ...e5 lines."}},
+
+    {id:"kid-fourpawns",name:"Four Pawns Attack (5.f4)",eco:"E76",v:"=",
+     gist:"White takes everything: four pawns abreast. It looks terrifying, and it is the reason every King's Indian player must know the ...c5 counterstrike.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 f4 O-O Nf3 c5 d5 e6 Be2 exd5 cxd5 Bg4 O-O Nbd7 Nd2 Bxe2 Qxe2 Re8",
+     notes:{8:"The Four Pawns Attack. Space is not free — each of those pawn moves is a piece left at home.",11:"The right answer to over-extension is a strike at its base. Not ...e5, which simply invites fxe5.",13:"Opening the position while White is still developing. This is the move that makes the whole line safe.",17:"The modern main line. The older 9...Re8 allows 10.e5, when the complications favour the better-prepared player.",19:"Completing development and preparing to trade off White's best defender.",23:"Equal, and easier to play as Black: every one of those white pawns needs looking after."}},
+
+    {id:"kid-averbakh",name:"Averbakh Variation (6.Bg5)",eco:"E73",v:"⩲",
+     gist:"Yuri Averbakh's move stops ...e5 by tactical means. Black answers with the other classic King's Indian break instead.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Be2 O-O Bg5 c5 d5 h6 Bf4 e6 dxe6 Bxe6 Bxd6 Re8 Nf3 Nc6",
+     notes:{10:"The Averbakh. The pin is the point: 6...e5? runs into 7.dxe5 dxe5 8.Qxd8 Rxd8 9.Nd5, hitting f6 and c7 at once.",11:"So Black uses the other break. Against Bg5 systems ...c5 is the move, not ...e5.",13:"Asking the bishop to declare itself before Black commits in the centre.",15:"Undermining the head of the chain. Black is happy to give the d6 pawn for open lines and the bishop pair.",19:"The compensation: White's king is still in the middle, the e-file is open, and both black bishops are firing. Roughly balanced."}},
+
+    {id:"kid-fianch-panno",name:"Fianchetto: Panno (6...Nc6)",eco:"E63",v:"⩲",
+     gist:"Against the fianchetto there is no white king to attack, so Black changes wings: ...a6, ...Rb8 and ...b5.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 Nf3 d6 g3 O-O Bg2 Nc6 O-O a6 d5 Na5 Nd2 c5 Qc2 Rb8 b3 b5 Bb2 bxc4 bxc4 Ng4",
+     notes:{8:"The Fianchetto Variation — the safest system against the King's Indian, and the one against which Black scores worst.",11:"The Panno, after the Argentine grandmaster Oscar Panno.",13:"The plan in one move: ...Rb8 and ...b5 will follow, hitting the pawn that holds the centre.",14:"White gains a tempo but commits the centre; the knight is happy on a5 where it stares at c4.",19:"The main line. Practically every strong player has played this rook move here.",21:"The break, at last. This is Black's counterplay in every fianchetto line.",25:"White has a pull, Black has the queenside file and a clear plan — a normal, playable game."}},
+
+    {id:"kid-fianch-classical",name:"Fianchetto: ...Nbd7 and ...e5",eco:"E68",v:"⩲",
+     gist:"The classical answer to the fianchetto: trade in the centre and pile onto the e4 pawn.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 Nf3 d6 g3 O-O Bg2 Nbd7 O-O e5 e4 exd4 Nxd4 Re8 h3 Nc5 Re1 a5",
+     notes:{11:"...Nbd7 keeps c6 free for a pawn and supports the ...e5 break.",13:"On time. With White's bishop on g2 rather than e2 there is no attack to build, so Black plays for the centre.",15:"Trading before White gets in d5. The point is that e4 becomes a target rather than a spearhead.",17:"The rook joins the pressure on e4 immediately.",19:"Both knights and the rook now hit e4. White can hold it — but defenders are not attackers, which is the whole idea.",21:"...a5 grabs queenside space and rules out b4. A comfortable version of the fianchetto for Black."}},
+
+    {id:"kid-makogonov",name:"Makogonov (6.h3)",eco:"E90",v:"⩲",
+     gist:"The modern anti-King's Indian: h3 first, so that g4 comes next and Black's ...f5 never gets going.",
+     moves:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O h3 e5 d5 a5 Be3 Na6 g4 Nd7 a3 Nac5 Rg1 c6",
+     notes:{10:"h3 looks slow and is not: it prepares g4, which takes f5 away from Black's entire plan. Tomashevsky and others made it fashionable.",11:"Black strikes in the centre before White finishes the set-up.",13:"Stopping b4 first, as usual when the centre closes.",14:"The modern choice — the bishop goes to e3 so the g-pawn keeps the g5 square.",15:"Na6 and then Nc5 is the standard route; do not hurry the knight to c5 before the other pieces are ready.",19:"Both knights find squares and Black's position holds together.",21:"...c6 is Black's break here, and the moment for it is exactly when White has committed with g4."}}
+  ],
+  traps:[
+    {name:"The fork trick that isn't",kind:"forced",pre:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 O-O",bad:"Nxe4",
+     why:"In the Italian and the Four Knights this capture works, because ...d5 forks back. Here there is no fork, no pin and nothing to recover the piece: after 8.Nxe4 the e5 pawn hangs as well, and Black ends up a piece down for two pawns. The King's Indian is built on letting White have the centre — the one thing you may never do is grab it.",
+     pun:"Nxe4 exd4 Nxd4 d5 Nc3",
+     best:"Nc6",bestWhy:"7...Nc6 is the main line: hit d4, and meet 8.d5 with 8...Ne7 and the whole kingside plan. 7...exd4, 7...Nbd7 and 7...Na6 are all playable too."},
+
+    {name:"Averbakh: the ...e5 that loses material",kind:"practical",pre:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Be2 O-O Bg5",bad:"e5",
+     why:"The move that makes every other King's Indian work is the one move that fails here, and this is the entire reason 6.Bg5 exists. After 7.dxe5 dxe5 8.Qxd8 Rxd8 9.Nd5 the knight hits f6 and c7 at once while the bishop on g5 pins the defender.",
+     caveat:"Engines call 6...e5 an inaccuracy rather than a loss, because 9...Nxd5 holds — but that is the only move. 9...Ne8 10.Bxd8 drops the exchange, and 9...c6, 9...Na6, 9...Kf8, 9...Rd6 and 9...Nxe4 all lose material too.",
+     pun:"dxe5 dxe5 Qxd8 Rxd8 Nd5",
+     best:"c5",bestWhy:"Against Bg5 systems the break is 6...c5, not 6...e5 — and after 7.d5 h6 it is White's bishop that has to answer a question."}
+  ]
 }
 ];
 
@@ -1866,6 +1967,37 @@ sicilian:[
   why:"White offers a wing pawn to deflect your c-pawn and build a big centre. Take it \u2014 declining hands over the space for free. When the pawn is chased with a3, the answer is the classical one: meet a flank attack with a strike in the centre.",
   pun:"cxb4 a3 d5",
   best:"Nf3",bestWhy:"The sound moves are 2.Nf3, 2.Nc3 and 2.c3; the wing gambit gives away a pawn for too little."}
+],
+kid:[
+ {name:"Forgetting the bishop on g5",kind:"forced",pre:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 d5 a5 Bg5 h6",bad:"Nd2",
+  why:"White plays the standard manoeuvring move and misses that 8...h6 attacked the bishop. This is the commonest way to lose a piece in the Petrosian: the bishop came to g5 to pin the f6 knight, ...h6 asked it the question, and the answer has to be Bh4, Be3 or Bxf6 — not another developing move. 9.O-O drops the piece in exactly the same way.",
+  pun:"hxg5 c5 Nfd7",
+  best:"Bh4",bestWhy:"9.Bh4 keeps the pin on f6, which is the whole point of the variation."},
+
+ {name:"The same bishop, another variation",kind:"forced",pre:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Be2 O-O Bg5 c5 d5 h6",bad:"Nf3",
+  why:"The Averbakh bishop stands on g5 for the same reason and is just as loose. Once ...h6 hits it, it must move; developing instead hands over a piece. Take it, and when the knight recaptures, ...e5! attacks it again so the material stays won.",
+  pun:"hxg5 Nxg5 e5",
+  best:"Bf4",bestWhy:"8.Bf4 is the main line — the bishop keeps an eye on d6 from a square where nothing attacks it."},
+
+ {name:"The sacrifice on g5 that does not work",kind:"forced",pre:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 Be3 Ng4 Bg5 f6 Bh4 g5",bad:"Nxg5",
+  why:"It looks like the standard refutation: the g4 knight is loose, the black king is airy, and two white pieces point at the kingside. But 10...fxg5 11.Bxg4 gxh4 leaves Black a piece up, and the bishop that was doing all the work is the one that disappears. 10.Bxg5 and 10.dxe5 lose material the same way.",
+  pun:"fxg5 Bxg4 gxh4",
+  best:"Bg3",bestWhy:"10.Bg3 or 10.h3 — the bishop simply steps back and remains useful on the b8–h2 diagonal."},
+
+ {name:"The c4 pawn really is hanging",kind:"forced",pre:"d4 Nf6 c4 g6 Nc3 Bg7 Nf3 d6 g3 O-O Bg2 Nc6 O-O a6 d5 Na5",bad:"Bd2",
+  why:"The knight went to a5 for one reason: it attacks c4. Any developing move that does not deal with the pawn simply loses it, and the bishop then has to crawl back to c1 having achieved nothing. 9.Ng5, 9.Qc2, 9.Nd4 and 9.e4 all drop the pawn as well, which is precisely why the main lines are 9.Nd2 and 9.b3.",
+  pun:"Nxc4 Bc1 Bd7",
+  best:"Nd2",bestWhy:"9.Nd2 defends c4 and heads for c4 or b3 itself — the main line, and the reason Black's knight so often has to come back."},
+
+ {name:"Grabbing e5 in the Bayonet",kind:"forced",pre:"d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 O-O Nc6 d5 Ne7 b4 Nh5",bad:"Nxe5",
+  why:"The e5 pawn looks loose because the knight has left f6, but it is defended by the bishop on g7 and White is simply giving away a piece. Recapture with the bishop: 10...dxe5? allows 11.Bxh5 gxh5 12.Qxh5, when White has two pawns and an attack for the piece, while after 10...Bxe5 nothing is hanging and Black is a clean piece up.",
+  pun:"Bxe5 Bd2 Nf4",
+  best:"c5",bestWhy:"White should get on with the queenside plan — 10.c5, 10.Re1 or 10.Nd2, all of which leave e5 well alone."},
+
+ {name:"Blocking your own defender",kind:"forced",pre:"d4 Nf6 c4 g6 Nc3 Bg7 Nf3 d6 g3 O-O Bg2 Nbd7 O-O e5 e4 exd4 Nxd4 Re8",bad:"Nf3",
+  why:"The e4 pawn is defended twice — by the knight on c3 and by the bishop on g2 down the long diagonal. Retreating the knight to f3 stands it in the bishop's way, so e4 is defended once and attacked twice: 10...Nxe4 11.Nxe4 Rxe4 wins a clean pawn, and the rook cannot be chased because White's own knight blocks the diagonal it would be chased down.",
+  pun:"Nxe4 Nxe4 Rxe4",
+  best:"h3",bestWhy:"10.h3 is the main line: it stops ...Bg4 and leaves the g2 bishop's diagonal open, so e4 stays defended twice."}
 ]
 };
 
