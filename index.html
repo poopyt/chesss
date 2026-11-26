@@ -136,6 +136,13 @@ header.top{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-bot
 .pick .barwrap{height:3px;background:var(--line);margin-top:7px}
 .pick .barwrap i{display:block;height:100%;background:var(--teal)}
 .overall{border:1px solid var(--line);background:var(--panel2);padding:11px 13px;margin-bottom:14px}
+/* review queue: what to work on now */
+.rev{width:100%;text-align:left;border:1px solid var(--line);border-left:2px solid var(--rose);
+  background:var(--panel2);padding:9px 11px;margin-bottom:6px;transition:.15s;display:block}
+.rev:hover{border-color:var(--brass-line);border-left-color:var(--brass);background:var(--brass-dim)}
+.rev .t{font-size:13px;display:block}
+.rev .t small{display:block;color:var(--ink3);font-size:10.5px;font-family:var(--mono);margin-top:1px}
+.rev .w{display:block;margin-top:4px;font-family:var(--mono);font-size:10px;color:var(--rose)}
 .overall .n{font-family:var(--mono);font-size:20px;color:var(--brass)}
 .overall .l{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-top:2px}
 .overall .barwrap{height:4px;background:var(--line);margin-top:9px}
@@ -202,6 +209,44 @@ footer a{color:var(--ink2)}
 @media (max-width:960px){
   .main{grid-template-columns:1fr}.rail{min-height:0}.pane{max-height:none}
   .board-col{max-width:none}.wrap{padding:14px 14px 40px}.spine{display:none}
+}
+/* Stacked portrait: cap the board by height as well as width, or on a tablet a
+   720px board pushes the coach and the controls below the fold. */
+@media (max-width:960px) and (orientation:portrait){
+  .board-frame{max-width:min(100%,62vh);max-width:min(100%,62svh);margin-left:auto;margin-right:auto}
+}
+/* Landscape phones and small tablets: put the coach beside the board instead of
+   under it, so feedback is readable without scrolling the board away. */
+@media (max-width:960px) and (orientation:landscape){
+  .board-col{display:grid;gap:8px 14px;align-content:start;
+    grid-template-columns:min(58vw,86vh) minmax(0,1fr);
+    grid-template-columns:min(58vw,86svh) minmax(0,1fr);
+    grid-template-areas:"board coach" "board ctrls"}
+  .board-frame{grid-area:board}
+  .coach{grid-area:coach;margin-top:0}
+  .ctrls{grid-area:ctrls;margin-top:0;align-content:start}
+}
+/* Touch: the guideline is a 44px target. Keep the desktop sizes unchanged. */
+@media (pointer:coarse){
+  .seg button{padding:11px 16px;font-size:13px}
+  .btn{padding:12px 15px;font-size:13.5px}
+  .mini{padding:10px 14px;font-size:12.5px}
+  .tabs button{padding:14px 4px;font-size:11px}
+  .sel-lvl{padding:12px 8px;font-size:13px}
+  #eng-badge{font-size:11px}
+  .brand .tag{font-size:11px}
+  .coach .lbl{font-size:11px}
+  .coach p{font-size:14.5px}
+  #eng-retry{padding:11px 12px!important;font-size:12px!important}
+}
+/* Phone: claw back vertical space so the board and the controls under it fit
+   on one screen. */
+@media (max-width:620px){
+  header.top{gap:10px;padding-bottom:10px;margin-bottom:12px}
+  .brand h1{font-size:22px} .mark{font-size:22px} .brand .tag{display:none}
+  .top-right{gap:8px}
+  .coach{min-height:0;padding:10px 12px}
+  .wrap{padding-top:12px}
 }
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 </style>
@@ -1730,6 +1775,177 @@ var BOOK = [
      pun:"dxe5 dxe5 Qxd8 Rxd8 Nd5",
      best:"c5",bestWhy:"Against Bg5 systems the break is 6...c5, not 6...e5 — and after 7.d5 h6 it is White's bishop that has to answer a question."}
   ]
+},
+{
+  id:"italian-black", name:"Italian Game as Black", aka:"Giuoco Piano with 3...Bc5", eco:"C50–C54",
+  opener:"1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5", side:"black",
+  summary:"The same opening you play as White, seen from the other side of the board. 3...Bc5 answers the bishop on c4 with a bishop of your own: it covers d4 and f2, it keeps the game symmetrical and sound, and — unlike 3...Nf6 — it never allows 4.Ng5 and the whole Fried Liver circus. What you need to know is small and very concrete: one set-up against the quiet lines, one defence against each gambit, and the three ways White can simply lose a piece on move four.",
+  ideas:[
+    "3...Bc5 and 3...Nf6 are both good, but they lead to different worlds. ...Bc5 keeps you out of 4.Ng5 entirely, and a bishop on c5 guards d4 — which is why half of White's tricks fail.",
+    "The bishop on c5 is your best piece and White's main target. Whenever White plays d4, ask first whether the bishop is hanging: the commonest way to lose this opening as Black is to develop while d4xc5 is in the air.",
+    "In the quiet lines the move order is ...a6 and ...Ba7 before anything committal. The bishop steps off the b-file in advance, so White's b4 and a4 space-gaining plan loses its point.",
+    "...d5 is the freeing move, exactly as it is for White in the mirror image. Prepare it with ...c6 and ...Ne7–g6 and play it when White's pieces cannot punish the opening of the centre.",
+    "Against every gambit here — Evans, Scotch, Italian — the answer is the same shape: take what is offered, give the pawn back at the right moment, and finish developing. You are not trying to keep the extra pawn; you are trying to reach a normal position a tempo up in structure.",
+    "f2 is White's weak square just as f7 is yours. The tactics that win for Black in this opening nearly all come from the c5 bishop and a knight landing on d4 or g4."
+  ],
+  structure:"An open game with symmetrical pawns until White commits. If White plays c3 and d4 the centre opens and both sides develop fast; if White plays d3 the game is a slow manoeuvring battle where ...d5 decides whether Black equalises. Against the gambits, Black's structure is healthy and the extra pawn is temporary.",
+  plans:{white:"Build the c3/d4 centre, or play d3 and manoeuvre Nbd2–f1–g3, aiming at f7 and the kingside.",black:"Complete development with ...Nf6, ...d6, ...O-O, tuck the bishop on a7, meet d4 with a trade or a check on b4, and free the position with ...d5. Against gambits, return the pawn to finish developing."},
+  pitfall:"Treating it as a quiet symmetrical opening and developing on autopilot. Three of White's natural-looking fourth moves lose a piece on the spot, and two of Black's natural-looking replies to d4 lose one — the whole opening is decided by whether you check what is hanging before you develop.",
+  reading:[
+    {work:"Italian Game & Evans Gambit",author:"Jan Pinski",note:"Everyman Chess. The standard modern reference for 4.c3 and the Evans, from both sides."},
+    {work:"The Ideas Behind the Chess Openings",author:"Reuben Fine",note:"Why Black concedes nothing by meeting a bishop with a bishop in the open games."},
+    {work:"Chess Openings for Black, Explained",author:"Alburt, Dzindzichashvili & Perelshteyn",note:"A practical Black repertoire treatment of the open games."},
+    {work:"The Evans Gambit: Modern Play",author:"Chess.com opening article",note:"Summarises where the Evans stands today and why 5...Ba5 remains Black's main line."}
+  ],
+  lines:[
+    {id:"ib-pianissimo",name:"Pianissimo: the main set-up",eco:"C53",v:"=",
+     gist:"The line you will meet most often. Nobody opens anything, both sides manoeuvre, and Black's job is to get ...a6, ...Ba7 and eventually ...d5 in.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d3 d6 O-O a6 a4 Ba7 Re1 O-O h3 h6 Nbd2 Be6 Bxe6 fxe6",
+     notes:{5:"The Giuoco Piano. The bishop covers d4 and f2 and keeps White's knight out of g5 for good.",6:"c3 prepares d4 and gives the bishop the c2 square — the same plan you use as White.",8:"The modern main line: d3 first, tension kept, pieces improved.",11:"...a6 before anything else. It stops Bb5 ideas and prepares the bishop's retreat.",13:"The point of ...a6. On a7 the bishop keeps the a7–g1 diagonal and is out of reach of b4 and a4.",17:"...h6 is useful, not slow: it takes g5 away from both white pieces before they get there.",19:"Offering the trade of light-squared bishops. Black's remaining bishop is the better one.",21:"Recapturing towards the centre. Black has the half-open f-file, a solid centre and an easy game — this is full equality."}},
+
+    {id:"ib-pianissimo-d5",name:"Pianissimo: the ...d5 break",eco:"C54",v:"⩲",
+     gist:"The freeing break in slow motion: ...c6, the knight to g6, and only then ...d5. Learn this and the quiet Italian stops being annoying.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d3 a6 O-O d6 Re1 O-O Nbd2 Ba7 Bb3 Ne7 Nf1 Ng6 Ng3 c6 h3 d5",
+     notes:{9:"...a6 first, as always in this structure.",15:"...Ba7 in advance: the bishop will never have to move again.",17:"The knight reroutes to g6, where it covers f4 and e5 and supports ...d5.",21:"...c6 is the last preparation — it gives the d5 pawn a second defender.",23:"The break. Black has arranged every piece behind it, and the position is level with chances for both sides. Played a move too early, ...d5 just loses a pawn."}},
+
+    {id:"ib-4d3",name:"Quiet 4.d3 without c3",eco:"C50",v:"⩲",
+     gist:"White keeps c3 free for the queen's knight. Black's set-up barely changes — which is the point of learning a scheme rather than a move order.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 d3 Nf6 O-O d6 c3 a6 Bb3 Ba7 Re1 O-O Nbd2 Ne7 Nf1 Ng6 h3 c6",
+     notes:{6:"A different move order to the same structures. Do not change your plan.",11:"...a6 and ...Ba7 again.",17:"...Ne7–g6 again. The scheme is the same whatever White's move order.",21:"...c6, preparing ...d5. Black is comfortable."}},
+
+    {id:"ib-mainline-d4",name:"Main line 4.c3 Nf6 5.d4",eco:"C54",v:"=",
+     gist:"White plays the classical d4. Black checks on b4 first, trades into a symmetrical centre and equalises by force.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d4 exd4 cxd4 Bb4+ Bd2 Bxd2+ Nbxd2 d5 exd5 Nxd5 Qb3 Nce7 O-O O-O Rfe1 c6",
+     notes:{9:"Taking is correct. The bishop on c5 is attacked, so this is not optional.",11:"The check is the whole point: Black gains the tempo needed to finish developing.",14:"7.Nc3 instead is the Møller Attack — a different lesson, and far sharper.",15:"...d5 at once. In every Italian line, when ...d5 works Black is equal.",18:"Hitting d5 and b7 together, the standard try for an edge.",19:"...Nce7 is the precise square: it holds d5 without blocking anything. This single move is what makes the whole line safe.",23:"...c6 and Black is solid everywhere. A genuine equaliser."}},
+
+    {id:"ib-moller",name:"Defending the Møller Attack",eco:"C54",v:"=",
+     gist:"White sacrifices a pawn for a huge lead in development. There is one path through it, and this is it — every move is the only move.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d4 exd4 cxd4 Bb4+ Nc3 Nxe4 O-O Bxc3 d5 Bf6 Re1 Ne7 Rxe4 d6 Bg5 Bxg5 Nxg5 O-O",
+     notes:{12:"The Møller (or Greco) Attack. White ignores the pawn and plays for the initiative.",13:"Take it. Declining leaves White with a free centre and the attack anyway.",15:"...Bxc3 — take the knight, not with the knight. Taking with the knight first is the losing version.",17:"...Bf6 is the move. The bishop is driven back but stays on the long diagonal where it defends.",19:"...Ne7 blocks the e-file and holds the position together.",21:"...d6 at last — now the queenside can come out.",25:"...O-O and Black has survived with level material and a level position. Castling here, rather than grabbing more, is what the whole defence was for."}},
+
+    {id:"ib-evans-acc",name:"Evans Gambit accepted",eco:"C52",v:"=",
+     gist:"Take the pawn, retreat the bishop to a5, and give the pawn back at the right moment. Black ends up perfectly healthy.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 b4 Bxb4 c3 Ba5 d4 exd4 O-O d6 cxd4 Bb6 Nc3 Na5 Bg5 Ne7 Bd3 O-O",
+     notes:{6:"The Evans Gambit. White gives a pawn for the tempo on the bishop and the big centre.",7:"Accepting is best. Declining hands White the space for nothing.",9:"...Ba5 is the main line: the bishop keeps an eye on the a5–e1 diagonal and hits c3.",13:"...d6 is the move the whole defence rests on: it holds e5 and opens the queenside.",15:"...Bb6 reaches the Normal Position, where Black is a pawn up and White has open lines for it.",17:"...Na5 trades off the bishop that points at f7. With that piece gone the attack is usually over.",21:"...O-O and Black is simply fine. White has activity, Black has the extra pawn and no weaknesses."}},
+
+    {id:"ib-evans-lasker",name:"Evans: the Lasker treatment",eco:"C52",v:"⩲",
+     gist:"Lasker's practical answer: hand the pawn straight back, trade queens and leave White with nothing to attack.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 b4 Bxb4 c3 Ba5 d4 d6 Qb3 Qd7 dxe5 Bb6 Nbd2 Na5 Qc2 Nxc4 Nxc4 dxe5",
+     notes:{11:"...d6 instead of taking again. Black gives back the centre pawn and keeps the structure.",12:"The standard try: the queen eyes b7 and f7 at once.",13:"...Qd7 defends both. Ugly, solid, and the reason this line is named after Lasker.",15:"...Bb6 returns the pawn to free the pieces.",17:"...Na5 again — trade the dangerous bishop.",21:"Material is level and the attack is gone. Not a win for Black, but exactly what you want against a gambit."}},
+
+    {id:"ib-evans-dec",name:"Evans Gambit declined",eco:"C51",v:"=",
+     gist:"If you would rather not memorise the accepted lines, 4...Bb6 is safe — but know the a4–a5 ideas or the bishop gets trapped.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 b4 Bb6 a4 a6 Nc3 Nf6 Nd5 Nxd5 exd5 Nd4 Nxd4 Bxd4 Ra3 O-O",
+     notes:{7:"Declining. The bishop keeps the diagonal and Black skips all the theory.",8:"a4 threatens a5, trapping the bishop — this is the only thing you must know here.",9:"...a6 is necessary. Now a5 is always met by ...Ba7.",15:"...Nd4 trades into a comfortable game.",19:"The rook lift looks odd but is standard. Black is equal and White has nothing concrete."}},
+
+    {id:"ib-scotch-gambit",name:"Scotch Gambit (4.d4 exd4 5.O-O)",eco:"C44",v:"⩱",
+     gist:"White castles and leaves the pawn behind. Answer with ...d6 — not the natural ...Nf6, which walks into the Max Lange.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 d4 exd4 O-O d6 Re1 Bg4 Nbd2 Ne5 Be2 Nf6 h3 Be6",
+     notes:{7:"Take. The pawn is poisoned only if you go wrong afterwards.",9:"...d6 is the move. 5...Nf6 6.e5 is the Max Lange Attack, twenty moves of memory where one slip loses.",11:"...Bg4 pins the knight that would recapture on d4 and prepares to trade it off.",13:"...Ne5 hits the bishop and heads for the strong square in front of the isolated pawn.",17:"...Be6 trades White's best piece. Black is a pawn up with an entirely sound position."}},
+
+    {id:"ib-4oo-bxd4",name:"4.O-O Nf6 5.d4 — take with the bishop",eco:"C55",v:"⩱",
+     gist:"The simplest antidote to the whole Max Lange complex: capture on d4 with the bishop and the attack never starts.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 O-O Nf6 d4 Bxd4 Nxd4 Nxd4 f4 d6 fxe5 dxe5 Bg5 Qe7 Nc3 c6",
+     notes:{8:"White offers the Max Lange. The move order matters enormously here.",9:"...Bxd4 — the quiet refutation. 5...exd4 6.e5 is the Max Lange, and 5...Nxe4 and 5...d6 both drop a piece to 6.dxc5.",11:"...Nxd4 recaptures and Black is already comfortable: the engine prefers Black here.",15:"...dxe5 keeps the centre and the knight on d4 is a monster.",19:"...c6 shores up d5 and Black is at least equal. The whole Max Lange disappeared on move five."}},
+
+    {id:"ib-italian-gambit",name:"Italian Gambit (4.d4)",eco:"C50",v:"=",
+     gist:"d4 a move early. Take with the bishop, trade a pair of knights and Black is already out of trouble.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 d4 Bxd4 Nxd4 Nxd4 Be3 Nc6 Nc3 d6 f4 exf4 Bxf4 Nf6 O-O Be6 Bd5 h6",
+     notes:{6:"Premature: the d4 pawn is undefended, so Black can simply take it.",7:"...Bxd4 is the cleanest. 4...Nxd4 and 4...exd4 are also fine, but after 4...Nf6? 5.dxc5 Black is just a piece down.",9:"...Nxd4 and the dust settles. White has nothing for the pawn he has regained.",13:"...d6 holds everything and prepares to develop.",19:"...Be6 completes development. Equal, and easier to play as Black."}},
+
+    {id:"ib-four-knights",name:"Italian Four Knights (4.Nc3)",eco:"C50",v:"=",
+     gist:"White develops the knight instead of pushing a pawn. Black mirrors, and the game turns on the d4 and d5 squares.",
+     moves:"e4 e5 Nf3 Nc6 Bc4 Bc5 Nc3 Nf6 d3 d6 O-O O-O Bg5 h6 Bh4 Nd4 Nxd4 Bxd4 Nd5 g5 c3 Nxd5",
+     notes:{6:"Quiet and sound. White keeps d4 in reserve and eyes d5.",13:"Pinning the knight. Ask the question immediately.",15:"...Nd4 is the standard counter: the knight takes the outpost and offers a trade.",19:"...g5 is safe here precisely because the pin has been broken first.",21:"Black is fine. The bishop pair compensates for the slightly airy kingside."}}
+  ],
+  traps:[
+    {name:"Developing into d4xc5",kind:"forced",pre:"e4 e5 Nf3 Nc6 Bc4 Bc5 d4",bad:"Nf6",
+     why:"The single most common way to lose this opening as Black. ...Nf6 is the move you want to play in almost every other position, and here it simply hangs the bishop: 5.dxc5 and there is no way to recover the piece. 4...d6 and 4...Qe7 lose it in exactly the same way. Whenever White plays d4, the bishop on c5 is the first thing to look at.",
+     pun:"dxc5 d5 exd5 e4 dxc6",
+     best:"Bxd4",bestWhy:"4...Bxd4 takes the pawn and saves the bishop in one move. 4...exd4 and 4...Nxd4 are also perfectly good — anything that deals with the attack on c5."},
+
+    {name:"The fork trick that costs a piece",kind:"forced",pre:"e4 e5 Nf3 Nc6 Bc4 Bc5 O-O Nf6 d4",bad:"Nxe4",
+     why:"In other openings ...Nxe4 wins the pawn back because ...d5 forks. Here White does not have to cooperate: 6.dxc5! leaves the bishop hanging with check-like force, and after 6...Nxc5 7.Be3 Black has given a piece for a pawn. The same applies to 5...d6? and 5...Bb6? — once White has played d4, the bishop must be dealt with first.",
+     pun:"dxc5 Nxc5 Be3",
+     best:"Bxd4",bestWhy:"5...Bxd4! both saves the bishop and takes the pawn, and it sidesteps the Max Lange Attack into the bargain."},
+
+    {name:"...d5 one move too early",kind:"positional",pre:"e4 e5 Nf3 Nc6 Bc4 Bc5 c3",bad:"d5",
+     why:"...d5 is the move that equalises the Italian — but only once it is prepared. Played immediately it drops a pawn for nothing: 5.exd5 Na5 6.Qa4+ and the fork on a5 and e5 means Black never regains it. The break needs ...c6 and a knight on g6 behind it first.",
+     pun:"exd5 Na5 Qa4+",
+     best:"Nf6",bestWhy:"4...Nf6 develops and keeps the break in reserve for the moment it actually works."}
+  ]
+},
+{
+  id:"e5-answers", name:"Answers to 1.e4 e5", aka:"When White avoids the Italian", eco:"C20–C89",
+  opener:"1.e4 e5 — everything except 3.Bc4", side:"black",
+  summary:"You answer 1.e4 with 1...e5 and hope for the Italian. Most of the time you will not get it: White plays the Ruy López, the Scotch, the Four Knights, a gambit, or one of the sidelines. This is one answer to each, chosen to need as little memory as possible and to lead to the same kind of position you already understand — bishops out early, the centre contested, and no long forced lines to forget.",
+  ideas:[
+    "You need a reply to every third move White has, not a deep theory of one. Nine answers at eight moves deep beats one answer at twenty-five moves deep, because the game is decided by whether you know the plan on move ten.",
+    "Against the gambits — King's Gambit, Danish, Centre Game, Ponziani — the recipe is always the same: decline or accept cleanly, develop, castle, and give the pawn back to finish developing. You are playing for a sound position, not for the extra pawn.",
+    "When White's queen comes out early, as in the Centre Game and the Ponziani, develop at her. Every tempo you gain hitting the queen is a piece you get out for free.",
+    "In the Ruy López, ...a6 and ...Be7 and the ...Na5 manoeuvre against the b3 bishop is the classical scheme. The point of ...a6 early is the same as in the Italian: you decide when the bishop trade happens, not White.",
+    "Two patterns win material again and again in these openings: a bishop on c5 pointing at f2 and d4, and a queen check on h4 once f4 has been played and e1–h4 is open. Both appear in the drills."
+  ],
+  structure:"Open games throughout. Either White trades on e5 or pushes past it; either the centre opens early and development decides, or it locks and manoeuvring does. In every line here Black's aim is the same: get the bishops out, castle, and strike with ...d5 or ...f5 when the centre allows.",
+  plans:{white:"Pressure e5 with Bb5 and d4, or open the position with an early d4 or f4 gambit and attack before Black finishes developing.",black:"Develop with tempo wherever White's queen or bishop allows it, complete development before grabbing material, and break with ...d5 once the king is safe."},
+  pitfall:"Trying to keep every gambit pawn. In the King's Gambit, the Centre Game and the Ponziani a pawn returned at the right moment buys the development that wins the game; a pawn clutched costs the king.",
+  reading:[
+    {work:"The Ideas Behind the Chess Openings",author:"Reuben Fine",note:"Still the clearest explanation of why the open games are about development, not material."},
+    {work:"Chess Openings for Black, Explained",author:"Alburt, Dzindzichashvili & Perelshteyn",note:"A full Black repertoire built on 1...e5, with the sidelines covered."},
+    {work:"Italian Game & Evans Gambit",author:"Jan Pinski",note:"Everyman Chess. Useful here too: the Scotch Gambit and Italian move orders cross over constantly."}
+  ],
+  lines:[
+    {id:"e5-ruy-closed",name:"Ruy López: Closed",eco:"C88",v:"⩲",
+     gist:"The main event. ...a6, ...Be7, ...b5 and the knight tour to a5 — the classical set-up that has been played for a hundred years.",
+     moves:"e4 e5 Nf3 Nc6 Bb5 a6 Ba4 Nf6 O-O Be7 Re1 b5 Bb3 d6 c3 O-O h3 Na5 Bc2 c5 d4 Qc7",
+     notes:{5:"...a6 first, always. It asks the bishop to decide and gains the option of ...b5 later.",9:"...Be7 is the solid main line. 5...Nxe4 is the Open Ruy — sound, but a different and much larger body of theory.",11:"Now ...b5, because Re1 has taken the defence off e4 and 7...Nxe4 is in the air.",14:"White's standard build-up. The centre will be settled by d4 in a move or two.",17:"The Chigorin manoeuvre: the knight heads for a5 and c4 to trade off the bishop aiming at f7.",19:"...c5 holds the centre and gives the knight on a5 a job.",21:"...Qc7 completes the set-up. Black is a touch worse in engine terms and completely solid in human ones."}},
+
+    {id:"e5-ruy-exchange",name:"Ruy López: Exchange",eco:"C68",v:"=",
+     gist:"White trades on c6 to wreck the structure and head for an endgame. The bishop pair is worth more than the doubled pawn.",
+     moves:"e4 e5 Nf3 Nc6 Bb5 a6 Bxc6 dxc6 O-O f6 d4 exd4 Nxd4 c5 Ne2 Qxd1 Rxd1 Bd7",
+     notes:{6:"The Exchange Variation. White's whole idea is a four-against-three majority in an endgame.",7:"Recapture towards the centre. The doubled pawn is ugly and it controls d5.",9:"...f6 props up e5. Slightly loosening, entirely necessary.",13:"...c5 drives the knight back and gains space with the pawn that was doubled anyway.",15:"Trading queens suits Black here: the bishop pair tells more as pieces come off.",17:"...Bd7 and Black is at least equal. The two bishops compensate for the structure in every line."}},
+
+    {id:"e5-scotch",name:"Scotch Game",eco:"C45",v:"=",
+     gist:"White opens the centre at once. Answer with ...Bc5, hitting the knight on d4, and develop with gain of time.",
+     moves:"e4 e5 Nf3 Nc6 d4 exd4 Nxd4 Bc5 Be3 Qf6 c3 Nge7 Bc4 Ne5 Be2 Qg6 O-O d6",
+     notes:{4:"The Scotch. White gets a lead in development and gives up the centre tension.",7:"...Bc5 is the move that fits everything else you play: it attacks d4 immediately.",9:"...Qf6 piles on d4 and dares White to defend it. Note 5.Bc4? here simply loses a piece to ...Bxd4.",11:"...Nge7 develops behind the queen and keeps the pressure.",13:"...Ne5 hits the bishop and heads for the good square.",15:"...Qg6 pressures g2 and e4. Black has developed every piece with a threat.",17:"...d6 and Black is equal with an easy game."}},
+
+    {id:"e5-four-knights",name:"Four Knights: Spanish",eco:"C48",v:"=",
+     gist:"The most symmetrical opening there is. Copy White until the position asks a question, then break the symmetry with ...Bxc3 and ...Qe7.",
+     moves:"e4 e5 Nf3 Nc6 Nc3 Nf6 Bb5 Bb4 O-O O-O d3 d6 Bg5 Bxc3 bxc3 Qe7 Re1 Nd8 d4 Ne6",
+     notes:{7:"...Bb4 mirrors. Symmetry is safe here as long as you stop copying at the right moment.",12:"The pin. This is the moment to break the symmetry — 7...Bg4?? copying would lose to 8.Nd5.",13:"...Bxc3 doubles White's pawns and removes the knight that eyes d5.",15:"...Qe7 unpins and prepares the regrouping.",17:"...Nd8 looks backward and is the standard manoeuvre: the knight goes to e6 to hit g5 and d4.",19:"...Ne6 and Black is fully equal with a sound structure against the doubled pawns."}},
+
+    {id:"e5-kings-gambit",name:"King's Gambit Declined (2...Bc5)",eco:"C30",v:"=",
+     gist:"Do not take the pawn — put the bishop on c5 instead. It stops White castling comfortably and sets a trap that wins games on the spot.",
+     moves:"e4 e5 f4 Bc5 Nf3 d6 Nc3 Nf6 Bc4 Nc6 d3 Bg4 Bb5 exf4 h3 Bxf3 Qxf3 O-O",
+     notes:{3:"...Bc5 declines. The bishop takes aim at f2 and g1, and White can no longer castle into safety.",4:"3.fxe5?? now loses on the spot to 3...Qh4+ — the whole point of the move order.",11:"...Bg4 pins the knight that holds e5 together.",13:"...exf4 at the right moment: with the knight pinned, the f-pawn cannot be recovered on Black's terms.",15:"Trading on f3 before White can untangle.",17:"...O-O and Black is equal with the extra pawn still on the board and a safe king — the opposite of what the King's Gambit is supposed to produce."}},
+
+    {id:"e5-vienna",name:"Vienna Game",eco:"C29",v:"=",
+     gist:"White plays Nc3 and f4 in the other order. Hit the centre with ...d5 immediately and the gambit loses its sting.",
+     moves:"e4 e5 Nc3 Nf6 f4 d5 fxe5 Nxe4 Nf3 Be7 d4 O-O Bd3 f5 exf6 Bxf6 O-O Nc6",
+     notes:{3:"...Nf6 first. Against 3.Bc4 the sharp 3...Nxe4 is playable but leads to the Frankenstein–Dracula; 3...Nc6 keeps it simple.",5:"...d5! The standard answer to f4 in the open games: meet a wing attack with a strike in the centre.",7:"...Nxe4 regains the pawn and the knight is secure.",13:"...f5 is the key move — Black takes the e-file break first.",15:"...Bxf6 develops with the recapture.",17:"...Nc6 and Black is equal with the freer game."}},
+
+    {id:"e5-bishops",name:"Bishop's Opening",eco:"C24",v:"⩲",
+     gist:"2.Bc4 before Nf3 — often just a move-order trick to reach the Italian or the Vienna. Answer with ...Nf6 and ...d5.",
+     moves:"e4 e5 Bc4 Nf6 d3 c6 Nf3 d5 Bb3 Bd6 Nc3 dxe4 Ng5 O-O Ncxe4 Nxe4 Nxe4 Be7",
+     notes:{3:"...Nf6 hits e4 and keeps every transposition available.",5:"...c6 prepares ...d5 — the same freeing break as in the Italian, and the same preparation.",7:"...d5 at the right moment.",9:"...Bd6 holds e5 and eyes the kingside.",17:"...Be7 and Black is fine. White has a nominal pull and no target."}},
+
+    {id:"e5-centre-game",name:"Centre Game",eco:"C22",v:"⩱",
+     gist:"White grabs the centre and brings the queen out on move three. Develop at her and Black is simply better.",
+     moves:"e4 e5 d4 exd4 Qxd4 Nc6 Qe3 Nf6 Nc3 Bb4 Bd2 O-O O-O-O Re8 Qg3 Nxe4 Nxe4 Rxe4",
+     notes:{4:"The queen recaptures and will be chased for the next five moves.",5:"...Nc6 with tempo. Every Black move from here develops and attacks.",9:"...Bb4 pins the knight that defends e4.",11:"...O-O before the storm: White is going to castle long and attack.",13:"...Re8 lines the rook up on the pawn that is about to fall.",15:"...Nxe4! The pin on the c3 knight means the pawn cannot be held.",17:"...Rxe4 and Black has won a pawn with a better position. This is why the Centre Game is rare."}},
+
+    {id:"e5-ponziani",name:"Ponziani Opening",eco:"C44",v:"=",
+     gist:"3.c3 prepares d4 but neglects development. ...d5 strikes immediately, and after the queen check Black is comfortable.",
+     moves:"e4 e5 Nf3 Nc6 c3 d5 Qa4 Nf6 Nxe5 Bd6 Nxc6 bxc6 d3 O-O Be2 Re8",
+     notes:{4:"The Ponziani. The move does nothing for development, which is the clue to the answer.",5:"...d5! Strike at once, before White gets d4 in.",6:"The only critical try: White pins the c6 knight to win the e5 pawn.",9:"...Bd6 develops and holds the structure together.",11:"...bxc6 keeps the pawn mass and opens the b-file.",15:"...Re8 and Black has the bishop pair, the open files and easy development for the pawn — more than enough."}}
+  ],
+  traps:[
+    {name:"Mate in one in the Vienna",kind:"forced",pre:"e4 e5 Nc3 Nf6 Bc4 Nxe4 Qh5",bad:"Nf6",
+     why:"3...Nxe4 is a real line, but only if you know this position. White's queen hits both e5 and f7, and f7 is defended by the king alone. Retreating the knight blocks nothing: 5.Qxf7 is mate. So is 4...Nxc3?? and so is 4...Nxf2??. Exactly one move holds the position together.",
+     pun:"Qxf7#",
+     best:"Nd6",bestWhy:"4...Nd6! is the only move: it blocks the bishop's diagonal and guards f7. After 5.Qxe5+ Qe7 the queens come off and Black is fine. If you cannot remember this, meet 3.Bc4 with 3...Nc6 instead."}
+  ]
 }
 ];
 
@@ -1998,6 +2214,53 @@ kid:[
   why:"The e4 pawn is defended twice — by the knight on c3 and by the bishop on g2 down the long diagonal. Retreating the knight to f3 stands it in the bishop's way, so e4 is defended once and attacked twice: 10...Nxe4 11.Nxe4 Rxe4 wins a clean pawn, and the rook cannot be chased because White's own knight blocks the diagonal it would be chased down.",
   pun:"Nxe4 Nxe4 Rxe4",
   best:"h3",bestWhy:"10.h3 is the main line: it stops ...Bg4 and leaves the g2 bishop's diagonal open, so e4 stays defended twice."}
+],
+"italian-black":[
+ {name:"4.Ng5 — the move that hangs a knight",kind:"forced",pre:"e4 e5 Nf3 Nc6 Bc4 Bc5",bad:"Ng5",
+  why:"Against 3...Nf6 the knight jump to g5 is a real attack. Against 3...Bc5 it is a blunder: nothing defends the knight and the queen simply takes it. This is the single biggest practical reason to answer 3.Bc4 with the bishop — club players reach for Ng5 on autopilot.",
+  pun:"Qxg5 O-O Qg6",
+  best:"c3",bestWhy:"4.c3, 4.d3 and 4.O-O are all normal. Against a bishop on c5, Ng5 is never a threat."},
+
+ {name:"The Jerome Gambit (4.Bxf7+)",kind:"forced",pre:"e4 e5 Nf3 Nc6 Bc4 Bc5",bad:"Bxf7+",
+  why:"A nineteenth-century joke that is still played in blitz: White throws in a bishop and a knight to drag the king out. Take both. After 4...Kxf7 5.Nxe5+ Nxe5 the king walks back to safety and Black is a piece up for one pawn — the only way to go wrong is to decline.",
+  pun:"Kxf7 Nxe5+ Nxe5",
+  best:"c3",bestWhy:"Anything sensible. The sacrifice is unsound against the simplest defence."},
+
+ {name:"4.Nxe5 — e5 is defended twice",kind:"forced",pre:"e4 e5 Nf3 Nc6 Bc4 Bc5",bad:"Nxe5",
+  why:"This wins a pawn in many openings because d4 comes next, forking the knight and the bishop. Here it does not: the bishop on c5 already guards d4. After 4...Nxe5 5.d4 Bb4+! Black keeps the piece with check, and the fork never happens.",
+  pun:"Nxe5 d4 Bb4+",
+  best:"d3",bestWhy:"4.d3 or 4.c3 — the e5 pawn cannot be won while a bishop sits on c5."},
+
+ {name:"Recapturing on d4 with the knight",kind:"forced",pre:"e4 e5 Nf3 Nc6 Bc4 Bc5 d4 exd4",bad:"Nxd4",
+  why:"Two black pieces hit d4: the knight on c6 and the bishop on c5. Recapturing walks into 5...Bxd4, and now 6.Qxd4?? loses the queen to 6...Nxd4. White has to give the pawn back instead, and Black is a clean piece up in the line played here.",
+  pun:"Bxd4 e5 Bxe5",
+  best:"c3",bestWhy:"5.c3 (the Italian Gambit) or 5.O-O (the Scotch Gambit) — White must play for development, not for the pawn."},
+
+ {name:"Taking on d4 with the queen",kind:"forced",pre:"e4 e5 Nf3 Nc6 Bc4 Bc5 O-O Nf6 d4 Bxd4",bad:"Qxd4",
+  why:"The bishop has just taken on d4 and White recaptures with the queen — forgetting that the e5 pawn is also looking at d4. 6...exd4 wins the queen for a bishop. The knight recapture 6.Nxd4 is the move, and then Black is only slightly better.",
+  pun:"exd4 e5 Ne4",
+  best:"Nxd4",bestWhy:"6.Nxd4 keeps material level; the resulting position is comfortable for Black but perfectly playable."},
+
+ {name:"5.Nxe5 in the Giuoco Piano",kind:"forced",pre:"e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6",bad:"Nxe5",
+  why:"The same miscounting one move later, and now with c3 played it looks even more tempting because d4 is supported. It still fails: 5...Nxe5 6.d4 Nxc4! takes the bishop before the fork lands, and the knight on c4 is defended in time.",
+  pun:"Nxe5 d4 Nxc4",
+  best:"d4",bestWhy:"5.d4 straight away is the main line; the pawn on e5 is not available."}
+],
+"e5-answers":[
+ {name:"Taking on e5 with a bishop on c5",kind:"forced",pre:"e4 e5 f4 Bc5",bad:"fxe5",
+  why:"The reason to decline the King's Gambit with 2...Bc5. White grabs the pawn and the e1–h4 diagonal is open: 3...Qh4+ 4.g3 Qxe4+ picks up the rook on h1 next, and the white king will never castle. Club players take on e5 here without thinking.",
+  pun:"Qh4+ g3 Qxe4+",
+  best:"Nf3",bestWhy:"3.Nf3 stops the check first — the only sensible move once the bishop sits on c5."},
+
+ {name:"Grabbing e5 in the Four Knights",kind:"forced",pre:"e4 e5 Nf3 Nc6 Nc3 Nf6 Bb5 Bb4 O-O O-O",bad:"Nxe5",
+  why:"The symmetry makes this look safe: White takes a pawn and expects to regain the piece with d4 or Nxc6. Neither works with the bishop on b4 pinning the c3 knight — after 6...Nxe5 Black is simply a piece up for a pawn.",
+  pun:"Nxe5 f4 Nc6",
+  best:"d3",bestWhy:"6.d3 is the main line. In the Four Knights the e5 pawn is never free."},
+
+ {name:"Developing into ...Bxd4 in the Scotch",kind:"forced",pre:"e4 e5 Nf3 Nc6 d4 exd4 Nxd4 Bc5",bad:"Bc4",
+  why:"The most natural developing move in the position loses a piece. The knight on d4 is attacked twice — by the bishop on c5 and the knight on c6 — and defended only by the queen, so 5...Bxd4 wins material whatever White does next. It is the same pattern that punishes 5.Nxd4 in the Italian.",
+  pun:"Bxd4 Qh5 Qf6",
+  best:"Be3",bestWhy:"5.Be3 is the main line: it defends d4 a second time before developing the other bishop."}
 ]
 };
 
@@ -2198,6 +2461,10 @@ function sidelinesFor(op,lesson){
   return op._sides.filter(function(t){
     var pre=t.pre.trim();
     return mv===pre||mv.indexOf(pre+" ")===0;
+  }).sort(function(a,b){
+    // deepest first, so the drill that belongs to this variation comes before
+    // the general move-four blunders that match every lesson in the opening
+    return b.pre.trim().split(/\s+/).length-a.pre.trim().split(/\s+/).length;
   });
 }
 
@@ -2212,6 +2479,7 @@ var S={
   student:"white",       // side the user plays
   orient:"white", sel:-1, legal:[], last:null, hint:0, badSq:-1,
   right:0, wrong:0, mistakes:[], finished:false, arrow:null,
+  missPly:-1, missCount:0,      // tries at the current ply, so a test can withhold the answer once
   drills:[], drillIdx:0, drillSeq:[], drillStep:0, drillWrong:0,
   busy:false, gen:0, timer:null, engineInfo:null, progress:{}, lastEval:0,
   // stepping back through the moves played so far. -1 means "at the live
@@ -2335,7 +2603,48 @@ function enterReview(ply){
 }
 function exitReview(){S.review=-1;S.reviewPos=null;}
 function noteAt(i){return S.lesson&&S.lesson.notes?S.lesson.notes[i]:null;}
-function prog(id){var p=S.progress[id];return p?{learn:!!p.learn,test:p.test||0,side:!!p.side}:{learn:false,test:0,side:false};}
+function prog(id){
+  var p=S.progress[id];
+  if(!p)return {learn:false,test:0,side:false,last:null,seen:0,due:0,streak:0,miss:[]};
+  return {learn:!!p.learn,test:p.test||0,side:!!p.side,
+          last:(typeof p.last==="number"?p.last:null),seen:p.seen||0,due:p.due||0,streak:p.streak||0,
+          miss:Array.isArray(p.miss)?p.miss:[]};
+}
+/* Spaced review. A best-ever score hides what you have since forgotten, so the
+   queue is driven by the LAST score and by how long it has been. */
+var DAY=86400000, REVIEW_STEPS=[1,3,7,16,35];
+function scheduleNext(p,passed){
+  p.streak=passed?(p.streak||0)+1:0;
+  p.seen=Date.now();
+  p.due=passed?(p.seen+REVIEW_STEPS[Math.min(p.streak-1,REVIEW_STEPS.length-1)]*DAY):p.seen;
+  return p;
+}
+function opOfLesson(id){
+  for(var i=0;i<BOOK.length;i++)if(BOOK[i]._byId&&BOOK[i]._byId[id])return BOOK[i];
+  return null;
+}
+/* What the student should actually work on next, worst first. */
+function reviewQueue(limit){
+  var now=Date.now(),out=[];
+  BOOK.forEach(function(op){
+    op.lines.forEach(function(l){
+      var p=prog(l.id);
+      if(p.last!=null&&p.last<80)
+        out.push({op:op,line:l,p:p,rank:0,why:"failed last time — "+p.last+"%"});
+      else if(p.last!=null&&p.due&&p.due<=now)
+        out.push({op:op,line:l,p:p,rank:1,why:"due for review — last "+p.last+"%"+
+          (p.seen?", "+Math.max(1,Math.round((now-p.seen)/DAY))+"d ago":"")});
+      else if(p.learn&&p.last==null)
+        out.push({op:op,line:l,p:p,rank:2,why:"walked through but never tested"});
+    });
+  });
+  out.sort(function(a,b){
+    if(a.rank!==b.rank)return a.rank-b.rank;
+    if(a.rank===0)return (a.p.last||0)-(b.p.last||0);
+    return (a.p.due||0)-(b.p.due||0);
+  });
+  return limit?out.slice(0,limit):out;
+}
 
 /* ============================================================
    Board
@@ -2496,13 +2805,26 @@ function startLesson(opId,lineId,phase){
   S.pos=new E.Position(); S.path=[]; S.node=op._tree;
   S.sel=-1;S.legal=[];S.last=null;S.hint=0;S.badSq=-1;
   S.right=0;S.wrong=0;S.mistakes=[];S.finished=false;
+  S.missPly=-1;S.missCount=0;
   S.drills=sidelinesFor(op,S.lesson);S.drillIdx=0;S.drillWrong=0;
   S.mode="course"; setModeButtons(); setPrev("");
   if(S.tab==="course"||S.tab==="line"){/*keep*/}else S.tab="course";
   renderBoard();updateEval();renderRail();
-  persist();
+  persist();focusBoard();
   if(S.phase==="side"){beginDrill();return;}
   step();
+}
+/* On a phone the lesson list sits a screenful below the board, so starting a
+   lesson from it used to look as if nothing had happened. Bring the board back
+   into view whenever it is off screen; on a wide layout this does nothing. */
+function focusBoard(){
+  try{
+    if(window.matchMedia&&window.matchMedia("(min-width:961px)").matches)return;
+    var r=boardEl.getBoundingClientRect();
+    if(r.top>=0&&r.top<window.innerHeight*0.5)return;
+    var y=window.scrollY+r.top-10;
+    window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
+  }catch(e){}
 }
 
 /* ---------------- sideline drills ---------------- */
@@ -2693,44 +3015,76 @@ function playStudentMove(m,san,shown){
 function wrongMove(m,san){
   var mv=lessonMoves(),want=mv[S.path.length];
   if(!want){finishLesson();return;}
-  var before=S.pos.clone();
+  var before=S.pos.clone(),ply=S.path.length;
   S.badSq=m.to;boardEl.classList.add("shake");
   setTimeout(function(){boardEl.classList.remove("shake");S.badSq=-1;renderBoard();},420);
   renderBoard();
-  if(S.phase==="test"){S.wrong++;S.mistakes.push({ply:S.path.length,played:san,want:want});}
+  // count a ply wrong once, however many tries it takes
+  if(S.missPly!==ply){S.missPly=ply;S.missCount=0;}
+  S.missCount++;
+  if(S.phase==="test"&&S.missCount===1){S.wrong++;S.mistakes.push({ply:ply,played:san,want:want});}
+  // a test that hands over the answer on the first miss is not a test: give the
+  // move away only once the student has had a second go at it
+  var reveal=(S.phase!=="test")||S.missCount>=2;
   var trap=null;
   (S.op._traps[fenKey(before)]||[]).forEach(function(t){if(t.bad===san)trap=t;});
   setCoach("Not this line","Checking <b>"+esc(san)+"</b> with the engine\u2026","err",null,"",null,phaseLabel());
   diagnose(before,m,san,function(d){
     var acts='<button class="mini go" id="aRetry">Try again</button>'+
+             (reveal?'':' <button class="mini" id="aMissHint">Hint</button>')+
              (trap?' <button class="mini" id="aTrap">Show the refutation</button>':'');
     setCoach("Not this line",
-      "<b>"+esc(san)+"</b> is not the move here. The line plays <b>"+esc(want)+"</b>"+
-      (noteAt(S.path.length)?": "+esc(noteAt(S.path.length)):"."),
+      reveal
+        ? ("<b>"+esc(san)+"</b> is not the move here. The line plays <b>"+esc(want)+"</b>"+
+           (noteAt(ply)?": "+esc(noteAt(ply)):"."))
+        : ("<b>"+esc(san)+"</b> is not the move here. Have another look \u2014 the answer comes after your next try."),
       "err",d.costLabel,acts,whyHtml(d,trap),phaseLabel());
     var r=document.getElementById("aRetry");
     if(r)r.onclick=function(){ promptStudent(); };
+    var h=document.getElementById("aMissHint");
+    if(h)h.onclick=doHint;
     var t=document.getElementById("aTrap");
     if(t&&trap)t.onclick=function(){ showRefutation(trap,san); };
   });
 }
+/* An opening is only useful if you can play the position it produces, so a
+   finished lesson can hand straight over to the engine from the final
+   position — still playing your own colour. */
+function playOnFromHere(){
+  var side=S.student;
+  S.gen++; if(S.timer){clearTimeout(S.timer);S.timer=null;} S.busy=false; cancelDiagnosis(); exitReview();
+  S.mode="play"; setModeButtons(); setPrev(""); S.finished=false;
+  S.orient=side; S.sel=-1; S.legal=[]; S.hint=0; S.arrow=null;
+  S.tab="line"; renderRail(); renderBoard(); updateEval(); focusBoard();
+  var mine=S.pos.turn===(side==="white"?E.WHITE:E.BLACK);
+  setCoach(mine?"Your move":"Engine to move",
+    "Playing on from the end of <b>"+esc(S.lesson?S.lesson.name:"the line")+"</b>. "+
+    "You are "+side+"; set the engine's strength at the top right.","ok",null,"",null,"");
+  if(!mine)engineMove();
+}
 function finishLesson(){
+  if(S.finished)return;   // step() and promptStudent() can both reach here; score it once
   S.finished=true;
   var id=S.lesson.id,p=prog(id);
   if(S.phase==="learn"){
     p.learn=true;S.progress[id]=p;persist();
     setCoach("Lesson complete","You have walked through <b>"+esc(S.lesson.name)+"</b> with help. "+
       "Now try it from memory.","ok",null,
-      '<button class="mini go" id="aTest">Test me on this line</button> <button class="mini" id="aAgain">Walk it again</button>',
+      '<button class="mini go" id="aTest">Test me on this line</button> <button class="mini" id="aAgain">Walk it again</button> <button class="mini" id="aPlayOn">Play on vs engine</button>',
       null,phaseLabel());
     document.getElementById("aTest").onclick=function(){startLesson(S.op.id,id,"test");};
     document.getElementById("aAgain").onclick=function(){startLesson(S.op.id,id,"learn");};
+    document.getElementById("aPlayOn").onclick=playOnFromHere;
   }else{
     var total=S.right+S.wrong,pct=total?Math.round(100*S.right/total):100;
-    p.test=Math.max(p.test,pct);S.progress[id]=p;persist();
+    p.test=Math.max(p.test,pct);
+    p.last=pct;                                  // the score that drives review
+    p.miss=S.mistakes.slice(-6).map(function(x){return {ply:x.ply,want:x.want,played:x.played};});
+    scheduleNext(p,pct>=80);
+    S.progress[id]=p;persist();
     var pass=pct>=80;
     var nxt=nextLesson();
-    var acts='<button class="mini" id="aAgain2">Test again</button>';
+    var acts='<button class="mini" id="aAgain2">Test again</button> <button class="mini" id="aPlayOn2">Play on vs engine</button>';
     if(!pass)acts='<button class="mini go" id="aRelearn">Walk it again with help</button> '+acts;
     var sl=sidelinesFor(S.op,S.lesson);
     if(pass&&sl.length)acts='<button class="mini go" id="aSide">Punish their mistakes ('+sl.length+')</button> '+acts;
@@ -2744,6 +3098,7 @@ function finishLesson(){
     if((a=document.getElementById("aSide")))a.onclick=function(){startLesson(S.op.id,id,"side");};
     if((a=document.getElementById("aAgain2")))a.onclick=function(){startLesson(S.op.id,id,"test");};
     if((a=document.getElementById("aRelearn")))a.onclick=function(){startLesson(S.op.id,id,"learn");};
+    if((a=document.getElementById("aPlayOn2")))a.onclick=playOnFromHere;
   }
   renderRail();
 }
@@ -3003,6 +3358,17 @@ function renderCourse(){
        '<div class="l">variations mastered across '+BOOK.length+' openings</div>'+
        '<div class="barwrap"><i style="width:'+pct+'%"></i></div></div>';
   }
+  // what to work on now, before the catalogue of everything
+  var q=reviewQueue(6);
+  if(q.length){
+    h+='<div class="h">Review — '+q.length+(q.length===6?'+':'')+' waiting</div>';
+    q.forEach(function(r){
+      var missTxt=r.p.miss.length?('missed '+r.p.miss.slice(0,2).map(function(m){return esc(m.want);}).join(', ')):'';
+      h+='<button class="rev" data-review="'+r.line.id+'">'+
+         '<span class="t">'+esc(r.line.name)+'<small>'+esc(r.op.name)+'</small></span>'+
+         '<span class="w">'+esc(r.why)+(missTxt?' · '+missTxt:'')+'</span></button>';
+    });
+  }
   h+='<div class="h">Choose an opening</div>';
   BOOK.forEach(function(op){
     var list=lessonList(op),done=0;
@@ -3148,6 +3514,12 @@ function renderEngine(){
   };
 }
 pane.addEventListener("click",function(ev){
+  var rv=ev.target.closest("[data-review]");
+  if(rv){
+    var rid=rv.getAttribute("data-review"),rop=opOfLesson(rid);
+    if(rop)startLesson(rop.id,rid,"test");
+    return;
+  }
   var p=ev.target.closest("[data-op]");
   if(p){startOpening(p.getAttribute("data-op"));return;}
   var l=ev.target.closest("[data-lesson]");
@@ -3157,7 +3529,14 @@ pane.addEventListener("click",function(ev){
   var g=ev.target.closest("[data-go]");
   if(g){var m=S.pos.moveFromSan(g.getAttribute("data-go"));if(m){doMove(m);exploreCoach();}return;}
   var pl=ev.target.closest("[data-ply]");
-  if(pl&&S.mode==="explore"){resetTo(+pl.getAttribute("data-ply"));renderBoard();exploreCoach();return;}
+  // clicking a move in the list steps the board back to it, in any mode —
+  // non-destructive, so Forward (or the panel button) returns to the game
+  if(pl){
+    var k=+pl.getAttribute("data-ply");
+    if(k>=S.path.length)resumeLive();
+    else{enterReview(k);renderBoard();updateEval();reviewCoach();focusBoard();}
+    return;
+  }
   var su=ev.target.closest("[data-setup]");
   if(su){
     var nm=su.getAttribute("data-setup"),tr=null;
@@ -3194,10 +3573,10 @@ function setMode(m){
     else{S.tab="course";renderRail();setCoach("Choose an opening","Pick one on the right to start the course.");}
     return;
   }
-  if(m==="explore"){S.tab="line";renderRail();exploreCoach();return;}
+  if(m==="explore"){S.tab="line";renderRail();exploreCoach();focusBoard();return;}
   if(m==="play"){
     S.orient=S.pos.turn===E.WHITE?"white":"black";
-    renderBoard();renderRail();
+    renderBoard();renderRail();focusBoard();
     setCoach("Play from here","You are "+S.orient+" and it is your move. The engine takes the other side.","ok");
   }
 }
