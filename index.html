@@ -203,6 +203,44 @@ footer a{color:var(--ink2)}
   .main{grid-template-columns:1fr}.rail{min-height:0}.pane{max-height:none}
   .board-col{max-width:none}.wrap{padding:14px 14px 40px}.spine{display:none}
 }
+/* Stacked portrait: cap the board by height as well as width, or on a tablet a
+   720px board pushes the coach and the controls below the fold. */
+@media (max-width:960px) and (orientation:portrait){
+  .board-frame{max-width:min(100%,62vh);max-width:min(100%,62svh);margin-left:auto;margin-right:auto}
+}
+/* Landscape phones and small tablets: put the coach beside the board instead of
+   under it, so feedback is readable without scrolling the board away. */
+@media (max-width:960px) and (orientation:landscape){
+  .board-col{display:grid;gap:8px 14px;align-content:start;
+    grid-template-columns:min(58vw,86vh) minmax(0,1fr);
+    grid-template-columns:min(58vw,86svh) minmax(0,1fr);
+    grid-template-areas:"board coach" "board ctrls"}
+  .board-frame{grid-area:board}
+  .coach{grid-area:coach;margin-top:0}
+  .ctrls{grid-area:ctrls;margin-top:0;align-content:start}
+}
+/* Touch: the guideline is a 44px target. Keep the desktop sizes unchanged. */
+@media (pointer:coarse){
+  .seg button{padding:11px 16px;font-size:13px}
+  .btn{padding:12px 15px;font-size:13.5px}
+  .mini{padding:10px 14px;font-size:12.5px}
+  .tabs button{padding:14px 4px;font-size:11px}
+  .sel-lvl{padding:12px 8px;font-size:13px}
+  #eng-badge{font-size:11px}
+  .brand .tag{font-size:11px}
+  .coach .lbl{font-size:11px}
+  .coach p{font-size:14.5px}
+  #eng-retry{padding:11px 12px!important;font-size:12px!important}
+}
+/* Phone: claw back vertical space so the board and the controls under it fit
+   on one screen. */
+@media (max-width:620px){
+  header.top{gap:10px;padding-bottom:10px;margin-bottom:12px}
+  .brand h1{font-size:22px} .mark{font-size:22px} .brand .tag{display:none}
+  .top-right{gap:8px}
+  .coach{min-height:0;padding:10px 12px}
+  .wrap{padding-top:12px}
+}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 </style>
 </head>
@@ -2212,6 +2250,7 @@ var S={
   student:"white",       // side the user plays
   orient:"white", sel:-1, legal:[], last:null, hint:0, badSq:-1,
   right:0, wrong:0, mistakes:[], finished:false, arrow:null,
+  missPly:-1, missCount:0,      // tries at the current ply, so a test can withhold the answer once
   drills:[], drillIdx:0, drillSeq:[], drillStep:0, drillWrong:0,
   busy:false, gen:0, timer:null, engineInfo:null, progress:{}, lastEval:0,
   // stepping back through the moves played so far. -1 means "at the live
@@ -2496,13 +2535,26 @@ function startLesson(opId,lineId,phase){
   S.pos=new E.Position(); S.path=[]; S.node=op._tree;
   S.sel=-1;S.legal=[];S.last=null;S.hint=0;S.badSq=-1;
   S.right=0;S.wrong=0;S.mistakes=[];S.finished=false;
+  S.missPly=-1;S.missCount=0;
   S.drills=sidelinesFor(op,S.lesson);S.drillIdx=0;S.drillWrong=0;
   S.mode="course"; setModeButtons(); setPrev("");
   if(S.tab==="course"||S.tab==="line"){/*keep*/}else S.tab="course";
   renderBoard();updateEval();renderRail();
-  persist();
+  persist();focusBoard();
   if(S.phase==="side"){beginDrill();return;}
   step();
+}
+/* On a phone the lesson list sits a screenful below the board, so starting a
+   lesson from it used to look as if nothing had happened. Bring the board back
+   into view whenever it is off screen; on a wide layout this does nothing. */
+function focusBoard(){
+  try{
+    if(window.matchMedia&&window.matchMedia("(min-width:961px)").matches)return;
+    var r=boardEl.getBoundingClientRect();
+    if(r.top>=0&&r.top<window.innerHeight*0.5)return;
+    var y=window.scrollY+r.top-10;
+    window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
+  }catch(e){}
 }
 
 /* ---------------- sideline drills ---------------- */
@@ -2693,23 +2745,34 @@ function playStudentMove(m,san,shown){
 function wrongMove(m,san){
   var mv=lessonMoves(),want=mv[S.path.length];
   if(!want){finishLesson();return;}
-  var before=S.pos.clone();
+  var before=S.pos.clone(),ply=S.path.length;
   S.badSq=m.to;boardEl.classList.add("shake");
   setTimeout(function(){boardEl.classList.remove("shake");S.badSq=-1;renderBoard();},420);
   renderBoard();
-  if(S.phase==="test"){S.wrong++;S.mistakes.push({ply:S.path.length,played:san,want:want});}
+  // count a ply wrong once, however many tries it takes
+  if(S.missPly!==ply){S.missPly=ply;S.missCount=0;}
+  S.missCount++;
+  if(S.phase==="test"&&S.missCount===1){S.wrong++;S.mistakes.push({ply:ply,played:san,want:want});}
+  // a test that hands over the answer on the first miss is not a test: give the
+  // move away only once the student has had a second go at it
+  var reveal=(S.phase!=="test")||S.missCount>=2;
   var trap=null;
   (S.op._traps[fenKey(before)]||[]).forEach(function(t){if(t.bad===san)trap=t;});
   setCoach("Not this line","Checking <b>"+esc(san)+"</b> with the engine\u2026","err",null,"",null,phaseLabel());
   diagnose(before,m,san,function(d){
     var acts='<button class="mini go" id="aRetry">Try again</button>'+
+             (reveal?'':' <button class="mini" id="aMissHint">Hint</button>')+
              (trap?' <button class="mini" id="aTrap">Show the refutation</button>':'');
     setCoach("Not this line",
-      "<b>"+esc(san)+"</b> is not the move here. The line plays <b>"+esc(want)+"</b>"+
-      (noteAt(S.path.length)?": "+esc(noteAt(S.path.length)):"."),
+      reveal
+        ? ("<b>"+esc(san)+"</b> is not the move here. The line plays <b>"+esc(want)+"</b>"+
+           (noteAt(ply)?": "+esc(noteAt(ply)):"."))
+        : ("<b>"+esc(san)+"</b> is not the move here. Have another look \u2014 the answer comes after your next try."),
       "err",d.costLabel,acts,whyHtml(d,trap),phaseLabel());
     var r=document.getElementById("aRetry");
     if(r)r.onclick=function(){ promptStudent(); };
+    var h=document.getElementById("aMissHint");
+    if(h)h.onclick=doHint;
     var t=document.getElementById("aTrap");
     if(t&&trap)t.onclick=function(){ showRefutation(trap,san); };
   });
@@ -3157,7 +3220,14 @@ pane.addEventListener("click",function(ev){
   var g=ev.target.closest("[data-go]");
   if(g){var m=S.pos.moveFromSan(g.getAttribute("data-go"));if(m){doMove(m);exploreCoach();}return;}
   var pl=ev.target.closest("[data-ply]");
-  if(pl&&S.mode==="explore"){resetTo(+pl.getAttribute("data-ply"));renderBoard();exploreCoach();return;}
+  // clicking a move in the list steps the board back to it, in any mode —
+  // non-destructive, so Forward (or the panel button) returns to the game
+  if(pl){
+    var k=+pl.getAttribute("data-ply");
+    if(k>=S.path.length)resumeLive();
+    else{enterReview(k);renderBoard();updateEval();reviewCoach();focusBoard();}
+    return;
+  }
   var su=ev.target.closest("[data-setup]");
   if(su){
     var nm=su.getAttribute("data-setup"),tr=null;
@@ -3194,10 +3264,10 @@ function setMode(m){
     else{S.tab="course";renderRail();setCoach("Choose an opening","Pick one on the right to start the course.");}
     return;
   }
-  if(m==="explore"){S.tab="line";renderRail();exploreCoach();return;}
+  if(m==="explore"){S.tab="line";renderRail();exploreCoach();focusBoard();return;}
   if(m==="play"){
     S.orient=S.pos.turn===E.WHITE?"white":"black";
-    renderBoard();renderRail();
+    renderBoard();renderRail();focusBoard();
     setCoach("Play from here","You are "+S.orient+" and it is your move. The engine takes the other side.","ok");
   }
 }
