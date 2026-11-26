@@ -1874,6 +1874,78 @@ var BOOK = [
      pun:"exd5 Na5 Qa4+",
      best:"Nf6",bestWhy:"4...Nf6 develops and keeps the break in reserve for the moment it actually works."}
   ]
+},
+{
+  id:"e5-answers", name:"Answers to 1.e4 e5", aka:"When White avoids the Italian", eco:"C20–C89",
+  opener:"1.e4 e5 — everything except 3.Bc4", side:"black",
+  summary:"You answer 1.e4 with 1...e5 and hope for the Italian. Most of the time you will not get it: White plays the Ruy López, the Scotch, the Four Knights, a gambit, or one of the sidelines. This is one answer to each, chosen to need as little memory as possible and to lead to the same kind of position you already understand — bishops out early, the centre contested, and no long forced lines to forget.",
+  ideas:[
+    "You need a reply to every third move White has, not a deep theory of one. Nine answers at eight moves deep beats one answer at twenty-five moves deep, because the game is decided by whether you know the plan on move ten.",
+    "Against the gambits — King's Gambit, Danish, Centre Game, Ponziani — the recipe is always the same: decline or accept cleanly, develop, castle, and give the pawn back to finish developing. You are playing for a sound position, not for the extra pawn.",
+    "When White's queen comes out early, as in the Centre Game and the Ponziani, develop at her. Every tempo you gain hitting the queen is a piece you get out for free.",
+    "In the Ruy López, ...a6 and ...Be7 and the ...Na5 manoeuvre against the b3 bishop is the classical scheme. The point of ...a6 early is the same as in the Italian: you decide when the bishop trade happens, not White.",
+    "Two patterns win material again and again in these openings: a bishop on c5 pointing at f2 and d4, and a queen check on h4 once f4 has been played and e1–h4 is open. Both appear in the drills."
+  ],
+  structure:"Open games throughout. Either White trades on e5 or pushes past it; either the centre opens early and development decides, or it locks and manoeuvring does. In every line here Black's aim is the same: get the bishops out, castle, and strike with ...d5 or ...f5 when the centre allows.",
+  plans:{white:"Pressure e5 with Bb5 and d4, or open the position with an early d4 or f4 gambit and attack before Black finishes developing.",black:"Develop with tempo wherever White's queen or bishop allows it, complete development before grabbing material, and break with ...d5 once the king is safe."},
+  pitfall:"Trying to keep every gambit pawn. In the King's Gambit, the Centre Game and the Ponziani a pawn returned at the right moment buys the development that wins the game; a pawn clutched costs the king.",
+  reading:[
+    {work:"The Ideas Behind the Chess Openings",author:"Reuben Fine",note:"Still the clearest explanation of why the open games are about development, not material."},
+    {work:"Chess Openings for Black, Explained",author:"Alburt, Dzindzichashvili & Perelshteyn",note:"A full Black repertoire built on 1...e5, with the sidelines covered."},
+    {work:"Italian Game & Evans Gambit",author:"Jan Pinski",note:"Everyman Chess. Useful here too: the Scotch Gambit and Italian move orders cross over constantly."}
+  ],
+  lines:[
+    {id:"e5-ruy-closed",name:"Ruy López: Closed",eco:"C88",v:"⩲",
+     gist:"The main event. ...a6, ...Be7, ...b5 and the knight tour to a5 — the classical set-up that has been played for a hundred years.",
+     moves:"e4 e5 Nf3 Nc6 Bb5 a6 Ba4 Nf6 O-O Be7 Re1 b5 Bb3 d6 c3 O-O h3 Na5 Bc2 c5 d4 Qc7",
+     notes:{5:"...a6 first, always. It asks the bishop to decide and gains the option of ...b5 later.",9:"...Be7 is the solid main line. 5...Nxe4 is the Open Ruy — sound, but a different and much larger body of theory.",11:"Now ...b5, because Re1 has taken the defence off e4 and 7...Nxe4 is in the air.",14:"White's standard build-up. The centre will be settled by d4 in a move or two.",17:"The Chigorin manoeuvre: the knight heads for a5 and c4 to trade off the bishop aiming at f7.",19:"...c5 holds the centre and gives the knight on a5 a job.",21:"...Qc7 completes the set-up. Black is a touch worse in engine terms and completely solid in human ones."}},
+
+    {id:"e5-ruy-exchange",name:"Ruy López: Exchange",eco:"C68",v:"=",
+     gist:"White trades on c6 to wreck the structure and head for an endgame. The bishop pair is worth more than the doubled pawn.",
+     moves:"e4 e5 Nf3 Nc6 Bb5 a6 Bxc6 dxc6 O-O f6 d4 exd4 Nxd4 c5 Ne2 Qxd1 Rxd1 Bd7",
+     notes:{6:"The Exchange Variation. White's whole idea is a four-against-three majority in an endgame.",7:"Recapture towards the centre. The doubled pawn is ugly and it controls d5.",9:"...f6 props up e5. Slightly loosening, entirely necessary.",13:"...c5 drives the knight back and gains space with the pawn that was doubled anyway.",15:"Trading queens suits Black here: the bishop pair tells more as pieces come off.",17:"...Bd7 and Black is at least equal. The two bishops compensate for the structure in every line."}},
+
+    {id:"e5-scotch",name:"Scotch Game",eco:"C45",v:"=",
+     gist:"White opens the centre at once. Answer with ...Bc5, hitting the knight on d4, and develop with gain of time.",
+     moves:"e4 e5 Nf3 Nc6 d4 exd4 Nxd4 Bc5 Be3 Qf6 c3 Nge7 Bc4 Ne5 Be2 Qg6 O-O d6",
+     notes:{4:"The Scotch. White gets a lead in development and gives up the centre tension.",7:"...Bc5 is the move that fits everything else you play: it attacks d4 immediately.",9:"...Qf6 piles on d4 and dares White to defend it. Note 5.Bc4? here simply loses a piece to ...Bxd4.",11:"...Nge7 develops behind the queen and keeps the pressure.",13:"...Ne5 hits the bishop and heads for the good square.",15:"...Qg6 pressures g2 and e4. Black has developed every piece with a threat.",17:"...d6 and Black is equal with an easy game."}},
+
+    {id:"e5-four-knights",name:"Four Knights: Spanish",eco:"C48",v:"=",
+     gist:"The most symmetrical opening there is. Copy White until the position asks a question, then break the symmetry with ...Bxc3 and ...Qe7.",
+     moves:"e4 e5 Nf3 Nc6 Nc3 Nf6 Bb5 Bb4 O-O O-O d3 d6 Bg5 Bxc3 bxc3 Qe7 Re1 Nd8 d4 Ne6",
+     notes:{7:"...Bb4 mirrors. Symmetry is safe here as long as you stop copying at the right moment.",12:"The pin. This is the moment to break the symmetry — 7...Bg4?? copying would lose to 8.Nd5.",13:"...Bxc3 doubles White's pawns and removes the knight that eyes d5.",15:"...Qe7 unpins and prepares the regrouping.",17:"...Nd8 looks backward and is the standard manoeuvre: the knight goes to e6 to hit g5 and d4.",19:"...Ne6 and Black is fully equal with a sound structure against the doubled pawns."}},
+
+    {id:"e5-kings-gambit",name:"King's Gambit Declined (2...Bc5)",eco:"C30",v:"=",
+     gist:"Do not take the pawn — put the bishop on c5 instead. It stops White castling comfortably and sets a trap that wins games on the spot.",
+     moves:"e4 e5 f4 Bc5 Nf3 d6 Nc3 Nf6 Bc4 Nc6 d3 Bg4 Bb5 exf4 h3 Bxf3 Qxf3 O-O",
+     notes:{3:"...Bc5 declines. The bishop takes aim at f2 and g1, and White can no longer castle into safety.",4:"3.fxe5?? now loses on the spot to 3...Qh4+ — the whole point of the move order.",11:"...Bg4 pins the knight that holds e5 together.",13:"...exf4 at the right moment: with the knight pinned, the f-pawn cannot be recovered on Black's terms.",15:"Trading on f3 before White can untangle.",17:"...O-O and Black is equal with the extra pawn still on the board and a safe king — the opposite of what the King's Gambit is supposed to produce."}},
+
+    {id:"e5-vienna",name:"Vienna Game",eco:"C29",v:"=",
+     gist:"White plays Nc3 and f4 in the other order. Hit the centre with ...d5 immediately and the gambit loses its sting.",
+     moves:"e4 e5 Nc3 Nf6 f4 d5 fxe5 Nxe4 Nf3 Be7 d4 O-O Bd3 f5 exf6 Bxf6 O-O Nc6",
+     notes:{3:"...Nf6 first. Against 3.Bc4 the sharp 3...Nxe4 is playable but leads to the Frankenstein–Dracula; 3...Nc6 keeps it simple.",5:"...d5! The standard answer to f4 in the open games: meet a wing attack with a strike in the centre.",7:"...Nxe4 regains the pawn and the knight is secure.",13:"...f5 is the key move — Black takes the e-file break first.",15:"...Bxf6 develops with the recapture.",17:"...Nc6 and Black is equal with the freer game."}},
+
+    {id:"e5-bishops",name:"Bishop's Opening",eco:"C24",v:"⩲",
+     gist:"2.Bc4 before Nf3 — often just a move-order trick to reach the Italian or the Vienna. Answer with ...Nf6 and ...d5.",
+     moves:"e4 e5 Bc4 Nf6 d3 c6 Nf3 d5 Bb3 Bd6 Nc3 dxe4 Ng5 O-O Ncxe4 Nxe4 Nxe4 Be7",
+     notes:{3:"...Nf6 hits e4 and keeps every transposition available.",5:"...c6 prepares ...d5 — the same freeing break as in the Italian, and the same preparation.",7:"...d5 at the right moment.",9:"...Bd6 holds e5 and eyes the kingside.",17:"...Be7 and Black is fine. White has a nominal pull and no target."}},
+
+    {id:"e5-centre-game",name:"Centre Game",eco:"C22",v:"⩱",
+     gist:"White grabs the centre and brings the queen out on move three. Develop at her and Black is simply better.",
+     moves:"e4 e5 d4 exd4 Qxd4 Nc6 Qe3 Nf6 Nc3 Bb4 Bd2 O-O O-O-O Re8 Qg3 Nxe4 Nxe4 Rxe4",
+     notes:{4:"The queen recaptures and will be chased for the next five moves.",5:"...Nc6 with tempo. Every Black move from here develops and attacks.",9:"...Bb4 pins the knight that defends e4.",11:"...O-O before the storm: White is going to castle long and attack.",13:"...Re8 lines the rook up on the pawn that is about to fall.",15:"...Nxe4! The pin on the c3 knight means the pawn cannot be held.",17:"...Rxe4 and Black has won a pawn with a better position. This is why the Centre Game is rare."}},
+
+    {id:"e5-ponziani",name:"Ponziani Opening",eco:"C44",v:"=",
+     gist:"3.c3 prepares d4 but neglects development. ...d5 strikes immediately, and after the queen check Black is comfortable.",
+     moves:"e4 e5 Nf3 Nc6 c3 d5 Qa4 Nf6 Nxe5 Bd6 Nxc6 bxc6 d3 O-O Be2 Re8",
+     notes:{4:"The Ponziani. The move does nothing for development, which is the clue to the answer.",5:"...d5! Strike at once, before White gets d4 in.",6:"The only critical try: White pins the c6 knight to win the e5 pawn.",9:"...Bd6 develops and holds the structure together.",11:"...bxc6 keeps the pawn mass and opens the b-file.",15:"...Re8 and Black has the bishop pair, the open files and easy development for the pawn — more than enough."}}
+  ],
+  traps:[
+    {name:"Mate in one in the Vienna",kind:"forced",pre:"e4 e5 Nc3 Nf6 Bc4 Nxe4 Qh5",bad:"Nf6",
+     why:"3...Nxe4 is a real line, but only if you know this position. White's queen hits both e5 and f7, and f7 is defended by the king alone. Retreating the knight blocks nothing: 5.Qxf7 is mate. So is 4...Nxc3?? and so is 4...Nxf2??. Exactly one move holds the position together.",
+     pun:"Qxf7#",
+     best:"Nd6",bestWhy:"4...Nd6! is the only move: it blocks the bishop's diagonal and guards f7. After 5.Qxe5+ Qe7 the queens come off and Black is fine. If you cannot remember this, meet 3.Bc4 with 3...Nc6 instead."}
+  ]
 }
 ];
 
@@ -2173,6 +2245,22 @@ kid:[
   why:"The same miscounting one move later, and now with c3 played it looks even more tempting because d4 is supported. It still fails: 5...Nxe5 6.d4 Nxc4! takes the bishop before the fork lands, and the knight on c4 is defended in time.",
   pun:"Nxe5 d4 Nxc4",
   best:"d4",bestWhy:"5.d4 straight away is the main line; the pawn on e5 is not available."}
+],
+"e5-answers":[
+ {name:"Taking on e5 with a bishop on c5",kind:"forced",pre:"e4 e5 f4 Bc5",bad:"fxe5",
+  why:"The reason to decline the King's Gambit with 2...Bc5. White grabs the pawn and the e1–h4 diagonal is open: 3...Qh4+ 4.g3 Qxe4+ picks up the rook on h1 next, and the white king will never castle. Club players take on e5 here without thinking.",
+  pun:"Qh4+ g3 Qxe4+",
+  best:"Nf3",bestWhy:"3.Nf3 stops the check first — the only sensible move once the bishop sits on c5."},
+
+ {name:"Grabbing e5 in the Four Knights",kind:"forced",pre:"e4 e5 Nf3 Nc6 Nc3 Nf6 Bb5 Bb4 O-O O-O",bad:"Nxe5",
+  why:"The symmetry makes this look safe: White takes a pawn and expects to regain the piece with d4 or Nxc6. Neither works with the bishop on b4 pinning the c3 knight — after 6...Nxe5 Black is simply a piece up for a pawn.",
+  pun:"Nxe5 f4 Nc6",
+  best:"d3",bestWhy:"6.d3 is the main line. In the Four Knights the e5 pawn is never free."},
+
+ {name:"Developing into ...Bxd4 in the Scotch",kind:"forced",pre:"e4 e5 Nf3 Nc6 d4 exd4 Nxd4 Bc5",bad:"Bc4",
+  why:"The most natural developing move in the position loses a piece. The knight on d4 is attacked twice — by the bishop on c5 and the knight on c6 — and defended only by the queen, so 5...Bxd4 wins material whatever White does next. It is the same pattern that punishes 5.Nxd4 in the Italian.",
+  pun:"Bxd4 Qh5 Qf6",
+  best:"Be3",bestWhy:"5.Be3 is the main line: it defends d4 a second time before developing the other bishop."}
 ]
 };
 
@@ -2959,6 +3047,21 @@ function wrongMove(m,san){
     if(t&&trap)t.onclick=function(){ showRefutation(trap,san); };
   });
 }
+/* An opening is only useful if you can play the position it produces, so a
+   finished lesson can hand straight over to the engine from the final
+   position — still playing your own colour. */
+function playOnFromHere(){
+  var side=S.student;
+  S.gen++; if(S.timer){clearTimeout(S.timer);S.timer=null;} S.busy=false; cancelDiagnosis(); exitReview();
+  S.mode="play"; setModeButtons(); setPrev(""); S.finished=false;
+  S.orient=side; S.sel=-1; S.legal=[]; S.hint=0; S.arrow=null;
+  S.tab="line"; renderRail(); renderBoard(); updateEval(); focusBoard();
+  var mine=S.pos.turn===(side==="white"?E.WHITE:E.BLACK);
+  setCoach(mine?"Your move":"Engine to move",
+    "Playing on from the end of <b>"+esc(S.lesson?S.lesson.name:"the line")+"</b>. "+
+    "You are "+side+"; set the engine's strength at the top right.","ok",null,"",null,"");
+  if(!mine)engineMove();
+}
 function finishLesson(){
   if(S.finished)return;   // step() and promptStudent() can both reach here; score it once
   S.finished=true;
@@ -2967,10 +3070,11 @@ function finishLesson(){
     p.learn=true;S.progress[id]=p;persist();
     setCoach("Lesson complete","You have walked through <b>"+esc(S.lesson.name)+"</b> with help. "+
       "Now try it from memory.","ok",null,
-      '<button class="mini go" id="aTest">Test me on this line</button> <button class="mini" id="aAgain">Walk it again</button>',
+      '<button class="mini go" id="aTest">Test me on this line</button> <button class="mini" id="aAgain">Walk it again</button> <button class="mini" id="aPlayOn">Play on vs engine</button>',
       null,phaseLabel());
     document.getElementById("aTest").onclick=function(){startLesson(S.op.id,id,"test");};
     document.getElementById("aAgain").onclick=function(){startLesson(S.op.id,id,"learn");};
+    document.getElementById("aPlayOn").onclick=playOnFromHere;
   }else{
     var total=S.right+S.wrong,pct=total?Math.round(100*S.right/total):100;
     p.test=Math.max(p.test,pct);
@@ -2980,7 +3084,7 @@ function finishLesson(){
     S.progress[id]=p;persist();
     var pass=pct>=80;
     var nxt=nextLesson();
-    var acts='<button class="mini" id="aAgain2">Test again</button>';
+    var acts='<button class="mini" id="aAgain2">Test again</button> <button class="mini" id="aPlayOn2">Play on vs engine</button>';
     if(!pass)acts='<button class="mini go" id="aRelearn">Walk it again with help</button> '+acts;
     var sl=sidelinesFor(S.op,S.lesson);
     if(pass&&sl.length)acts='<button class="mini go" id="aSide">Punish their mistakes ('+sl.length+')</button> '+acts;
@@ -2994,6 +3098,7 @@ function finishLesson(){
     if((a=document.getElementById("aSide")))a.onclick=function(){startLesson(S.op.id,id,"side");};
     if((a=document.getElementById("aAgain2")))a.onclick=function(){startLesson(S.op.id,id,"test");};
     if((a=document.getElementById("aRelearn")))a.onclick=function(){startLesson(S.op.id,id,"learn");};
+    if((a=document.getElementById("aPlayOn2")))a.onclick=playOnFromHere;
   }
   renderRail();
 }
